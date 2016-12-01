@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <script src = "util.js"></script>
+</head>
+<body>
+    <ul id="list">
+    <li id="item1">Simon</li>
+    <li id="item2">Kenner</li>
+    <li id="item3">Erik</li>
+    </ul>
+    <button id="btn">Change</button>
+
+    <ul id="list2">
+    <li>Simon</li>
+    <li>Kenner</li>
+    <li>Erik</li>
+    </ul>
+    <script type="text/javascript">
+        //考虑这样一个场景，我们需要对一个列表里所有的<li>增加点击事件的监听
+        function clickListener(event) {
+            console.log(event);
+        }
+        //方法一：针对每一个item去绑定事件，这样显然是一件很麻烦的事情。
+        $.click($("#item1"), clickListener);
+        $.click($("#item2"), clickListener);
+        $.click($("#item3"), clickListener);
+
+        //方法二：通过自己写的函数，取到id为list这个ul里面的所有li，然后通过遍历给他们绑定事件。这样我们就不需要一个一个去绑定了。
+        each($("#list2").getElementsByTagName('li'), function(li) {
+            addClickEvent(li, clickListener);
+        });
+        // 考虑加了一个按钮，当点击按钮时，改变list里面的项目，这个时候你再点击一下li，绑定事件不再生效了。
+        function renderList() {
+            $("#list").innerHTML = '<li>new item</li>';
+            /* 需要重新绑定事件
+            // 当加入
+            // each($("#list").getElementsByTagName('li'), function(item) {
+                $.click(item, clickListener);
+            });
+             点击按钮时绑定事件才会重新生效*/
+        }
+
+
+        function init() {
+            each($("#list").getElementsByTagName('li'), function(item) {
+                $.click(item, clickListener);
+            });
+
+            $.click($("#btn"), renderList);
+        }
+        init();
+        // 方法三：事件代理，改变DOM结构或内容不需要重新绑定事件
+        // 先简单一些
+        function renderList() {
+            $("#list").innerHTML = '<li>new item</li>';
+        }
+        $.click($("#btn"), renderList);
+
+        //（诡异的地方）这样写第一次点击列表不会有响应，要点到第二次才会有，之后点击都会立即响应
+        function delegateEvent(element, tag, eventName, listener) {
+            $.on(element, eventName, function(e) {
+                var e = e || window.event;
+                target = e.srcElement ? e.srcElement : e.target;
+                targetName = target.nodeName.toLowerCase();
+                if (targetName === tag) {
+                    $.on(target, eventName, listener);
+                }
+            })
+        }
+        // 但是这样写就不会有问题
+        // 可能是上面写了两个$.on，添加的是点击事件，要人为点击
+        function delegateEvent(element,tag,eventName,listener){
+            addEvent(element, eventName, function(event){
+                var target = event.target || event.srcElement;
+                if(target.tagName.toLowerCase() == tag.toLowerCase()) {
+                    listener.call(target, event);
+                }
+            });
+        }
+
+        $.delegate = delegateEvent;
+        var clickHandle = function (event) {
+            alert(event);
+        }
+
+        // 使用示例
+        // 还是上面那段HTML，实现对list这个ul里面所有li的click事件进行响应
+        $.delegate($("#list"), "li", "click", clickHandle);
+    </script>
+
+</body>
+</html>
+
+
+
+

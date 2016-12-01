@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    <div id="div" class="test two three" >
+        <div class="one">1</div>
+        <div class="one">2</div>
+    </div>
+    <p class="test"></p>
+    <a href=""></a>
+    <ul>
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+    </ul>
+
+    <script src = "js/util.js"></script>
+    <script >
+        function clickListener(event) {
+            console.log(event);
+        }
+
+        div = document.getElementById('div');
+        div.setAttribute('date','2016');
+        console.log(originalClassName = div.className); // one two three
+        console.log(document.getElementById('div')); // <div id="div" class="one two three">test</div>
+        alert(document.getElementById('div')); // [object HTMLDivElement]
+        allChildren = document.getElementsByTagName('*');
+        console.log(allChildren);
+        console.log(allChildren.length); //12
+        console.log(allChildren[2]); //<title></title>
+        alert(allChildren); // [object HTMLCollection]
+
+        function getClassName(name) {
+                var result = [];
+                var allChildren = null;
+                var currAttr = null;
+                allChildren = document.getElementsByTagName('*');
+                for (var i = 0; i < allChildren.length; i++) {
+                    currAttr =allChildren[i].getAttribute('class');
+                    if (currAttr !== null) {
+                        console.log(currAttr);
+                        var currAttrsArr = currAttr.split(/\s+/); //类名可能不止一个样式
+                        console.log(currAttrsArr);
+                        for (var j = 0; j < currAttrsArr.length; j++) {
+                            if (name === currAttrsArr[j]) { // 不管有多少个类名，只有有一个找到符合的就可以
+                                result.push(allChildren[i]);
+                            }
+                        }
+                    }
+                }
+                console.log(result);
+        }
+        getClassName('test');
+
+        function $(selector) {
+            if (!selector) {
+                return null;
+            }
+
+            if (selector == document) {
+                return document;
+            }
+
+            selector = selector.trim(); //取出首尾空格
+            if (selector.indexOf(" ") !== -1) { // 存在空格，即组合查询
+                var selectorArr = selector.split(/\s+/);
+
+                var rootScope = myQuery(selectorArr[0]); // 找出在第一个查询条件下的所有子节点，作为第二次查询的范围
+                console.log(rootScope);
+                var i = null;
+                var j = null;
+                var result = [];
+
+                for (i = 1; i < selectorArr.length; i++) { // i从1开始，rootScope即i=0时
+                    for (j = 0; j < rootScope.length; j++) {
+                        result.push(myQuery(selectorArr[i], rootScope[j]));
+                    }
+                }
+                return result[0][0];
+            } else { // 单一查询
+                return myQuery(selector,document)[0];
+            }
+
+        }
+
+        console.log($('#div .one'));
+
+        function myQuery(selector, root) {
+            var signal = selector[0];
+            var allChildren = null;
+            var content = selector.substr(1); // 选择器名称
+            var currAttr = null; // 是否有class属性的判据
+            var result = []; // 查找的结果
+            root = root || document; // 没有定义父节点，在整个document中查找
+
+            switch(signal) {
+                case '#':
+                    result.push(document.getElementById(content)); // id只有一个，查找范围document
+                    break;
+                case '.':
+                    allChildren = root.getElementsByTagName('*');  // class不只一个，查找范围root，取出范围下所有子元素
+                    for (var i = 0; i < allChildren.length; i++) {  // 遍历所有子元素
+                        currAttr = allChildren[i].getAttribute('class'); // 判断是否有class属性，返回属性值
+                        if (currAttr !== null) {
+                            currAttrsArr = currAttr.split(/\s+/);  // 将属性值分割成数组
+                            for(var j = 0; j < currAttrsArr.length; j++) { // 遍历属性值
+                            if (content === currAttrsArr[j]) {  // 当选择器名称与某个属性值相同时
+                                result.push(allChildren[i]);  // 将对应拥有该属性的元素压入result
+                            }
+                        }
+                    }
+                }
+                    break;
+                case '[':
+                    if (content.search('=') === -1) { // 只有属性没有值
+                        allChildren = root.getElementsByTagName('*');
+                        for (var i = 0; i < allChildren.length; i++) {
+                            if(allChildren[i].getAttribute(selector.slice(1, -1)) !== null) {
+                                result.push(allChildren[i]);
+                            }
+                        }
+                    } else { //既有属性，又有值
+                        allChildren = root.getElementsByTagName("*");
+                        var pattern = /\[(\w+)\s*\=\s*(\w+)\]/; //为了分离等号前后的内容
+                        var cut = selector.match(pattern); //分离后的结果，为数组
+                        //alert(cut);
+                        //console.log(cut);
+                        var key = cut[1]; //键
+                        var value = cut[2]; //值
+                        for (i = 0; i < allChildren.length; i++) {
+                            if (allChildren[i].getAttribute(key) == value) {
+                                result.push(allChildren[i]);
+                            }
+                        }
+                    }
+                  break;
+                default: // 开头不是特殊字符，即查找tagName
+                    result = root.getElementsByTagName(selector);
+                    break;
+            }
+            return result;
+        }
+
+
+        console.log(myQuery('[date=2016]'));
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>事件代理</title>
+    <style type="text/css">
+      body{background:#fff;}
+      a { color:#8080C0;text-decoration:none;border-bottom:2px solid #fff;}
+      a:hover {color:#336699;border-bottom-color:#B45B3E;}
+    </style>
+</head>
+<body>
+    <p>点击列表链接，取出里面的内容</p>
+    <ul id="nav">
+      <li><a href="http://www.cnblogs.com/">博客园</a></li>
+      <li><a href="http://www.blueidea.com/">蓝色理想</a></li>
+      <li><a href="http://www.51js.com/html/bbs.html">无忧脚本</a></li>
+      <li><a href="http://www.javaeye.com/">javaeye</a></li>
+      <li><a href="http://community.csdn.net/">CSDN</a></li>
+    </ul>
+    <button id="btn">change</button>
+    <script type="text/javascript">
+        // 传统方法，遍历li元素取
+        window.onload = function(){
+            var nav = document.getElementById("nav");
+            var links = nav.getElementsByTagName("a");
+            for (var i=0,l = links.length; i <l; i++) {
+              links[i].onclick = function () {
+                alert(this.innerHTML);
+                return false;
+              }
+            }
+        }
+        // 事件代理，用父元素nav去代理点击事件
+        // 点击链接，在冒泡阶段沿途向上直到nav触发事件
+        // nav负责了点击事件，包括的是它自己及其所有子元素
+        // 所以有时需要加入判断
+        // 少了DOM树的遍历，效率提高
+
+        var buttons = document.getElementById('btn');
+        // 为什么不能用document.getElementsByTagName('button');
+        console.log(buttons);
+        buttons.onclick = function() {
+            var nav1 = document.getElementById('nav');
+            nav1.innerHTML = '<li><a href="http://www.cnblogs.com/">博客园</a></li>';
+        }
+
+        window.onload = function(){
+            var nav = document.getElementById("nav");
+            nav.onclick = function () {
+                var e = arguments[0] || window.event,
+                target = e.srcElement ? e.srcElement : e.target;
+                //alert(target);
+                targetName = target.nodeName.toLowerCase(); // 避免伤及无辜，点击li的小圆圈也会弹框
+                if (targetName === 'a') {
+                    alert(target.innerHTML);
+                    return false; // 取消链接跳转
+                }
+            }
+        }
+    </script>
+</body>
+</html>
