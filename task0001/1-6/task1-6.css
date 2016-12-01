@@ -1,0 +1,216 @@
+.container {
+    width: 980px;
+    margin: 0 auto;
+    position: relative;
+}
+
+h1 {
+	color: blue;
+}
+h2 {
+	font-size: 14px;
+}
+p {
+	text-indent: 2em;
+	text-align: left;
+	font: 12px/20px Helvetica, "Microsoft Yahei", sans-serif;
+	color: yellow;
+	background: black;
+}
+img {
+	border: 2px solid red;
+	width: 20%;
+}
+
+/*div居中两种方法*/
+/*  定宽：① 设置左右margin上下auto
+          ② 父元素text-align：center，子元素inline-block
+    不定宽：①外层套<table>标签并设置margin; // 或者display:table;margin:0 auto;
+            ②display:inline;text-align:center;
+            ③父元素相对定位left:50%,子元素相对定位left:-50%;
+            <ul>列表居中：①仍垂直 ②水平
+*/
+#div1 {
+	width: 960px;
+    margin: 10px auto;
+	background: red;
+	text-align: center;
+}
+#div2 {
+	text-align: center;
+	margin-bottom: 10px;
+}
+#div2in {
+	width: 960px;
+	background: red;
+	display: inline-block;
+}
+
+/* 圆角矩形 */
+#div3 {
+    margin-bottom: 10px;
+}
+.b1, .b2, .b3, .b1b, .b2b, .b3b {
+    height: 1px;
+}
+.b2, .b3, .b4, .b2b, .b3b, .b4b, .b {
+    border-left: 1px solid #999;
+    border-right: 1px solid #999;
+}
+.b1, .b1b {
+    margin: 0 5px;
+    background: #999;
+}
+.b2, .b2b {
+    margin: 0 3px;
+    border-width: 2px;
+}
+.b3, .b3b {
+    margin: 0 2px;
+}
+.b4, .b4b {
+    height: 2px;
+    margin: 0 1px;
+}
+.d1 {
+    background: #B8DBFF;
+}
+.k {
+    height: 200px;
+}
+
+/*两列布局两种方法*/
+#div4 {
+	margin-bottom: 10px;
+}
+.nav1 {
+	position: absolute;  /*删除外边距使section1不会掉到下一行*/
+	width: 200px;
+	height: 50px;
+	background: red;
+}
+.section1 {
+	margin-left: 200px;
+	height: 50px;
+	background: blue;
+}
+.another1 {
+	width: 100%;
+	height: 50px;
+	background: yellow;
+}
+#div5 {
+	margin-bottom: 10px;
+}
+.nav2 {
+	float: left;
+	width: 200px;
+	height: 50px;
+	background: red;
+}
+.section2 {
+	margin-left: 200px;
+	height: 50px;
+	background: blue;
+}
+.another2 {
+	background: yellow;
+	height: 50px;
+	width: 100%;
+}
+/*三列布局三种方法*/
+#div6 {
+	width:100%;
+	margin-right:auto;
+	margin-left:auto;
+	margin-bottom: 10px;
+}
+.col-sub {
+	float:left;
+	width:50px;
+	height:50px;
+	background:red;
+}
+.col-main {
+    height:50px;
+    background: blue;
+}
+.col-extra {
+	float:right;
+	width:50px;
+	height:50px;
+	background:yellow;
+}
+/*jj*/
+#div7 {
+	padding: 0 50px 0 50px; /*使main左边部分和右边部分不会被覆盖*/
+	margin-bottom: 10px;
+	overflow: hidden;  /*清除浮动*/
+}
+.content {
+	float: left;
+	height: 50px;
+	width: 100%;  /*如果div7没有padding 充满整行 被覆盖*/
+	background: blue;
+}
+.aside-left {
+	float: left;
+	width: 50px;
+	height: 50px;
+	background: red;
+	margin-left: -100%; /*移动到上一行即main所在行，100%确保最左端*/
+	position: relative;
+	left: -50px;        /*移动到div7左边使不覆盖*/
+}
+.aside-right {
+	float: left;
+	width: 50px;
+	background: yellow;
+	margin-left: -50px; /*移动到上一行，像素等于自身宽度即在最右边*/
+	position: relative;
+	right: -50px;
+	height: 50px;
+}
+/*nn*/
+#div9 {
+	margin-bottom: 10px;
+	overflow: hidden;
+}
+.main {
+	float: left;
+	width: 100%;
+	height: 50px;
+	background: blue;
+}
+.main-wrap {
+    margin: 0 50px;   /*相当于减小了main*/
+}
+.sub {
+	float: left;
+	width: 50px;
+	height: 50px;
+	margin-left: -100%;
+	background: red;
+}
+.extra {
+	float: left;
+	width: 50px;
+	height: 50px;
+	margin-left: -50px;
+	background: yellow;
+}
+/* 可变容器 */
+#div8 {
+	width: 100%;
+	overflow: hidden;
+	margin-bottom: 10px;
+	background: red;
+}
+.floatbox {
+    width: 100px;
+    height: 100px;
+	background: blue;
+	float: left;
+	margin: 16px;
+
+}
