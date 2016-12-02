@@ -49,7 +49,7 @@ body {
     height: 40px;
     border: none;
     outline: medium;
-    background-image: url(https://www.anotherhome.net/file/ife/task0001/img/search.png);
+    background-image: url(../img/search.png);
     background-repeat: no-repeat;
     background-size: 144px;
 }
