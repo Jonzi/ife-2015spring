@@ -1,6 +1,6 @@
 {
   "name": "Ife-2015spring",
   "tagline": "2015春季班",
-  "body": "`<!DOCTYPE html>\r\n<html>\r\n<head>\r\n    <meta charset=\"utf-8\">\r\n    <title>万事屋</title>\r\n    <style type=\"text/css\">\r\n        li {\r\n            margin-bottom: 10px;\r\n        }\r\n    </style>\r\n</head>\r\n<body>\r\n<div class=\"task\" style=\"width: 980px;margin:0 auto\">\r\n    <h1>Task2 DEMO</h1>\r\n    <ul>\r\n        <li><a href=\"task0002_1.html\" target=\"_blank\">输出爱好</a></li>\r\n        <li><a href=\"task0002_2.html\" target=\"_blank\">倒计时</a></li>\r\n        <li><a href=\"task0002_3.html\" target=\"_blank\">轮播图</a></li>\r\n        <li><a href=\"task0002_4.html\" target=\"_blank\">输入提示框</a></li>\r\n    </ul>\r\n</div>\r\n</body>\r\n</html>`",
+  "body": "<!DOCTYPE html>\r\n<html>\r\n<head>\r\n    <meta charset=\"utf-8\">\r\n    <title>万事屋</title>\r\n    <style type=\"text/css\">\r\n        li {\r\n            margin-bottom: 10px;\r\n        }\r\n    </style>\r\n</head>\r\n<body>\r\n<div class=\"task\" style=\"width: 980px;margin:0 auto\">\r\n    <h1>Task2 DEMO</h1>\r\n    <ul>\r\n        <li><a href=\"task0002_1.html\" target=\"_blank\">输出爱好</a></li>\r\n        <li><a href=\"task0002_2.html\" target=\"_blank\">倒计时</a></li>\r\n        <li><a href=\"task0002_3.html\" target=\"_blank\">轮播图</a></li>\r\n        <li><a href=\"task0002_4.html\" target=\"_blank\">输入提示框</a></li>\r\n    </ul>\r\n</div>\r\n</body>\r\n</html>",
   "note": "Don't delete this file! It's used internally to help with page regeneration."
 }
