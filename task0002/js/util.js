@@ -521,39 +521,42 @@ function removeCookie(cookieName) {
 
 //AJAX
 function ajax(url, options) {
-
-    var dataResult; //结果data
-
+    // 创建对象
+    xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
     // 处理data
-    if (typeof(options.data) === 'object') {
-        var str = '';
-        for (var c in options.data) {
-            str = str + c + '=' + options.data[c] + '&';
+    if (options.data) {
+        var dataArr = [];
+        for (var item in options.data) {
+            dataArr.push(item + "=" options.data[item]);
         }
-        dataResult = str.substring(0, str.length - 1);
+        var newData = dataArr.join("&");
     }
-
     // 处理type
-    options.type = options.type || 'GET';
-
-    //获取XMLHttpRequest对象
-    var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
-
-    // 发送请求
-    xhr.open(options.type, url, true);
-    if (options.type == 'GET') {
-        xhr.send(null);
-    } else {
-        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-        xhr.send(dataResult);
+    if (!options.type) {
+        options.type = "GET";
     }
-
-    // readyState
+    options.type = options.type.toUpperCase();
+    // 发送请求
+    if (options.type = "GET") {
+        var newUrl = '';
+        if (options.data) {
+            newUrl = url + "?" + newData;
+        } else {
+            newUrl = url;
+        }
+        xhr.open("GET", newUrl, true);
+        xhr.send();
+    } else if (options.type = "POST") {
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.send(data);
+    }
+    // onreadystatechange 事件
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {
-                if (options.onsuccess) {
-                    options.onsuccess(xhr.responseText, xhr.responseXML);
+                if (options.success) {
+                    options.success(xhr.responseText, xhr.responseXML);
                 }
             } else {
                 if (options.onfail) {
@@ -561,5 +564,5 @@ function ajax(url, options) {
                 }
             }
         }
-    };
+    }
 }
