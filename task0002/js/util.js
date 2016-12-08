@@ -527,7 +527,7 @@ function ajax(url, options) {
     if (options.data) {
         var dataArr = [];
         for (var item in options.data) {
-            dataArr.push(item + "=" options.data[item]);
+            dataArr.push(item + "=" + options.data[item]);
         }
         var newData = dataArr.join("&");
     }
