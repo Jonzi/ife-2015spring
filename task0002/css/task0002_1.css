@@ -1,3 +1,14 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Microsoft YaHei, sans-serif;
+}
+
+body {
+    width: 980px;
+    margin: 200px auto;
+    background: #e2e2e2;
+}
 #suggest {
     background: red;
     display: none;
