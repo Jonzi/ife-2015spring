@@ -17,7 +17,7 @@ li {
 }
 
 body {
-    min-width: 980px;
-    background: #e2e2e2;
+    width: 980px;
+    margin:0 auto;
 }
 
