@@ -259,14 +259,14 @@ body {
 }
 
 .tag-time {
-    background: blue;
+    background: #607D8B;
     height: 40px;
     line-height: 40px;
     text-align: center;
 }
 
 .tag-content {
-    background: purple;
+    background: #b0b1c1;
     height: 40px;
     line-height: 40px;
     text-align: center;
@@ -315,7 +315,7 @@ body {
 }
 
 .number-now {
-    background: purple;
+    background: #9e9e9e;
     color: white;
 }
 
