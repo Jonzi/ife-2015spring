@@ -2,7 +2,7 @@ window.onload = function() {
     var iNow = null;
     var iNew = null;
     var timer = null;
-    var show = $("div");
+    var show = $(".show");
     $.click($("button"),function() {
         clearInterval(timer);
         var inputTime = $("input").value;
