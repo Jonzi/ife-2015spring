@@ -1,0 +1,378 @@
+﻿* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    min-width: 808px;
+}
+
+h2:hover,h3:hover, h4:hover, h6:hover {
+    background-color: #C8C8C6;
+    -webkit-appearance: button;
+    box-shadow: 1px 1px 5px #9e9e9e;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.selectedTask,.selectedCate,.selectedStatus{
+    background-color: #ebebeb;
+}
+
+#cateList ul {
+    font-weight: normal;
+    line-height: 2;
+    /* text-align: center; */
+}
+
+i.fa.fa-minus-circle {
+    /*opacity: 0;*/
+    float: right;
+
+    /* right: 0; */
+    /* position: relative; */
+    /* margin: inherit; */
+}
+
+span.fa.fa-minus-circle {
+    /*opacity: 0;*/
+    float: right;
+    line-height: 2;
+    /* right: 0; */
+    /* position: relative; */
+    /* margin: inherit; */
+}
+h4 {
+    font-weight: normal;
+}
+
+ul#taskList {
+    border-top: 1px dashed #bbbbbb;
+}
+
+li {
+    list-style-type: none;
+}
+
+
+header {
+    width: 100%;
+    min-width: 700px;
+    height: 45px;
+    top: 0;
+    left: 0;
+    background: #448aff;
+    line-height: 45px;
+    color: #fff;
+}
+
+.container {
+    width: 100%;
+    min-width: 808px;
+    min-height: 500px;
+    position: absolute;
+    top: 45px;
+    bottom: 0;
+    background-color: #e6ebf5;
+    /* overflow: hidden; */
+    padding: 16px 16px 8px 16px;
+    box-sizing: border-box;
+    /*padding: 10px; 右侧内容会溢出*/
+}
+
+h2 {
+    margin: 6px;
+}
+.leftCate, .midTask, .rightContent {
+    /* float: left; */
+    /* padding-bottom: 10000px; */
+    /* margin: 0 0 -10000px; */
+}
+
+.leftCate {
+    float: left;
+    width: 250px;
+    height: 100%;
+    position: relative;
+    background-color: #FFFFFF;
+    margin-right: 16px;
+}
+
+#cateList li {
+    margin-left: 15px;
+}
+
+#addCate, #addTask {
+    position: absolute;
+    bottom: 40px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #31CBFA;
+    text-align: center;
+    line-height: 40px;
+    color: #FFFFFF;
+}
+#addTask {
+    left: 230px;
+    /* text-shadow: 0 0 black; */
+}
+
+div#addCate {
+    left: 210px;
+}
+.midTask {
+    position: relative;
+    float: left;
+    width: 270px;
+    min-width: 270px;
+    height: 100%;
+    background-color: #FFFFFF;
+    margin-right: 16px;
+}
+
+
+.status {
+    text-align: center;
+    /*margin: 10px 0 10px 0;*/
+    height: 45px;
+    padding: 5px 0 5px 0;
+    line-height: 45px;
+    background-color: #ACACAC
+    /* border-bottom: 1px dashed #bbbbbb; */
+}
+
+.status ul {
+
+    display: inline-block;
+    /* text-align: center; */
+}
+
+.status li {
+    cursor: pointer;
+    float: left;
+    margin-right: 10px;
+    width: 80px;
+    /*height: 30px;*/
+    text-align: center;
+    /*line-height: 30px;*/
+/*    appearance: button;
+    -webkit-appearance: button;
+    -moz-appearance: button;*/
+    /* background-color: #eeeeee; */
+}
+
+.status li:hover {
+    box-shadow: 1px 1px #cccccc;
+}
+
+.status li:first-child {
+    margin-left: 10px;
+    width: 70px;
+}
+
+.status li.choose {
+    background-color: #6ED9E4;
+}
+
+.rightWrap {
+    position: relative;
+    height: 100%;
+    margin-left: 552px;
+    /*min-width: 200px;*/
+}
+
+.rightContent {
+    /*加浮动不能固定在右侧，宽度太窄掉下来*/
+    /* float: left; */
+    position: absolute;
+    /* overflow: scroll; */
+    /* margin-left: 552px; */
+    height: 100%;
+    left: 0;
+    right: 0;
+    /* overflow: hidden; */
+    background-color: #FFFFFF;
+    /*这里要加margin*/
+    /* margin-right: 16px; */
+}
+
+.DoneorEdit {
+    float: right;
+    /* display: none; */
+    margin-right: 5px;
+}
+
+.task_title {
+    /* position: fixed; */
+    /* top: 41px; */
+    /* display: block; */
+    /* height: 40px; */
+    padding-left: 10px;
+    line-height: 40px;
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #bbbbbb;
+}
+
+span#hidTitle {
+    /* height: 40px; */
+    /* line-height: 40px; */
+}
+
+.task_date {
+    padding-left: 10px;
+    /* position: relative; */
+    /* top: 41px; */
+    display: block;
+    /* overflow: hidden; */
+    line-height: 40px;
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #bbbbbb;
+}
+
+.rightHideWrap {
+    display: none;
+    position: relative;
+    height: 100%;
+    top: -633px;
+    margin-left: 552px;
+    /*min-width: 200px;*/
+}
+
+.rightHide {
+    /*display: none;*/
+    /* margin-left: 520px; */
+    height: 100%;
+    position: absolute;
+    /* bottom: 0; */
+    /* top: 45px; */
+    right: 0;
+    left: 0;
+    /*margin: 16px 16px 0px 16px;*/
+    background-color: #FFFFFF;
+}
+
+textarea#inputContent {
+    width: 100%;
+    text-indent: 2em;
+    /* height: 100%; */
+    border: none;
+    resize: none;
+    /* bottom: 0; */
+}
+
+textarea {
+    /* height: 100%; */
+    min-height: 200px;
+    resize: none;
+    width: 100%;
+    border: none;
+    overflow-y: visible;
+}
+
+
+.task_content {
+    /* width: 500px; */
+    /* min-height: 200px; */
+    /* max-height: 90%; */
+    /* height: 200px; */
+    position: absolute;
+     text-indent: 2em;
+    /* padding: 10px 10px 0 10px; */
+    /* float: right; */
+    right: 0;
+    top: 82px;
+    left: 0;
+    bottom: 0px;
+    /* height: 200px; */
+    /* margin-right: 33px; */
+    /*padding: 3px;*/
+    /* outline: 0; */
+    /*border: 1px solid #e4e4e4;*/
+    font-size: 12px;
+    word-wrap: break-word;
+    /* overflow-x: hidden; */
+    overflow-y: auto;
+     -webkit-user-modify: read-only;
+}
+.content {
+    width: 100%;
+    /* height: 550px; */
+    /* height: 100%; */
+    /* position: absolute; */
+    /* bottom: 0; */
+    /* overflow: hidden; */
+    /* color: black; */
+}
+
+div#cover {
+     display: none;
+     position: absolute;
+     /* width: 100%; */
+     /* height: 100%; */
+     left: 0;
+     top: 0;
+     right: 0;
+     bottom: 0;
+     /* float: left; */
+     /* overflow: hidden; */
+}
+
+.cover_wrap {
+    /* display: none; */
+    width: 300px;
+    height: 180px;
+    background-color: #eee;
+    /* margin: 0 auto; */
+    margin-left: -150px;
+    margin-top: -90px;
+    /* margin-bottom: -125px; */
+    /* line-height: 250px; */
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    /* border-radius: 10px; */
+    /* clear: both; */
+}
+
+.cover_title {
+    text-align: center;
+    /* border-bottom: 1px dashed; */
+    background-color: #79bcd6;
+    border-radius: 10px;
+}
+
+.cover_mainClass {
+    /* right: 10px; */
+    width: 170px;
+    height: 25px;
+    /* position: absolute; */
+    /* float: right; */
+    /* margin: 0 auto; */
+    /* margin-right: 10px; */
+}
+
+
+
+.cover_content {
+    margin: 10px;
+    text-align: center;
+}
+
+input#newCateName {width: 150px;height: 25px;margin-top: 10px;}
+
+.cover_footer {
+    position: absolute;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    bottom: 15px;
+    /* margin-bottom: 20px; */
+}
+
+button {
+    width: 60px;
+    height: 25px;
+    background-color: #ffffff;
+    /* margin: 0 auto; */
+}
