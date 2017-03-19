@@ -22,9 +22,10 @@
 })();
 
 function initSelectCate() {
-    var num = 0;
+    var num = 1;
+    $('#selectCate').innerHTML = '<option value =0' + ' selected>新增主分类</option>';
     each(data.cates, function (cate) {
-        $('#selectCate').innerHTML += '<option value =' + num + '>' + cate.category + '</option>'
+        $('#selectCate').innerHTML += '<option value =' + num + '>' + cate.category + '</option>';
         num++;
     })
 }
@@ -359,61 +360,61 @@ function addRightContent(obj) {
 var addCate = $('#addCate'),
     cancel = $('#cancel'),
     confirm = $('#confirm'),
-
     coverStyle = $('#cover').style,
+    selectCate = $('#selectCate'),
+    newCateName,
+    outCateName;
 
-    newCateName = $('#newCateName').value,
-    selectCate = $('#selectCate');
+    // newCateName = $('#newCateName').value
+    // XXX：不要在这里设置，这样newCateName是''
 
+var cate = $('#selectCate').options[0].innerHTML;
+var node;
+// 监听下拉框改变分类名
+selectCate.onchange = function () {
+    each(selectCate, function (theCate) {
+        // 主分类
 
-$.on(addCate, 'click', function () {
-    coverStyle.display = 'block';
-    newCateName = '';
-    var cate;
-    if (cancel) {
-        $.click(cancel, function () {
-            console.log(cancel);
-            console.log('cancel add cate');
-            coverStyle.display = 'none';
-        });
+        // 子分类
+        if (theCate.selected) {
+            if (theCate.textContent === '新建主分类') {
+                outCateName = $('#newCateName').value;
 
-    } if (confirm) {
-        $.click(confirm, function () {
-            // $('#defaultChild').innerHTML += '<li><h4><span class="fa fa-file-text"></span>' + newCateName + '</h4></li>'
-            // for (var i = 0; i < selectCate.length; i++) {
-            //     if (selectCate[i].selected) {
-            //         console.log(selectCate[i].innerHTML);
-
-            //     }
-            // }
-
-            // 下拉框选中列表名称cate(在哪个主分类下建立子分类)
-            each(selectCate, function (theCate) {
-                if (theCate.selected) {
-                    newCateName = $('#newCateName').value;
-                    cate = theCate.innerHTML;
-                    console.log($('[data-cate-id='+cate+']'));
-                    console.log($('[data-cate-id='+cate+']').children[1]);
-                    // var cateLi = $('[data-cate-id='+cate+']');
-                    var node = document.createElement('li');
-                    node.setAttribute('data-list-id', newCateName);
-                    $('[data-cate-id='+cate+']').children[1].appendChild(node);
-                    node.innerHTML ='<span class="fa fa-file-o fa-fw"></span>' + newCateName + '(' + toCount('data.lists', newCateName) + ')'+ '<span class="fa fa-minus-circle"></span></li>';
-                    // TODO
-                    // 添加后刷新如何保存
-
-                }
-            })
-
-
-
-            console.log(cate,newCateName);
-            console.log('confirm add cate');
-            coverStyle.display = 'none';
-            updateData();
-
-        });
+            }
+            newCateName = $('#newCateName').value; // 新建子分类名
+            cate = theCate.innerHTML;
+            console.log($('[data-cate-id='+cate+']'));
+            console.log($('[data-cate-id='+cate+']').children[1]);
+        }
+    });
+}
+$.click(cancel, function () {
+    console.log('cancel add cate');
+    coverStyle.display = 'none';
+});
+$.click(confirm, addACate);
+function addACate() {
+    if (outCateName!=='') {
+        $('#cateList').innerHTML += '<li data-cate-id='+ outCateName +'></li>'
     }
+    node = document.createElement('li');
+    var newCateName = $('#newCateName').value;
+    node.setAttribute('data-list-id', newCateName);
+    node.innerHTML ='<span class="fa fa-file-o fa-fw"></span>' + newCateName + '(' + toCount('data.lists', newCateName) + ')'+ '<span class="fa fa-minus-circle"></span>';
+    $('[data-cate-id='+cate+']').children[1].appendChild(node);
+    // 本地保存
+    newCateName = new TaskList(cate, newCateName);
+    data.lists.push(newCateName);
+    updateData();
+
+    coverStyle.display = 'none';
+    // TODO：正则排除重复空类名
+}
+$.on(addCate, 'click', function () {
+    // 不保留上次选中项
+    $('#selectCate').options[0].selected = true; // 设置默认显示文本
+    coverStyle.display = 'block';
+    $('#newCateName').value = '';
 });
 
 
@@ -422,6 +423,10 @@ function updateData() {
     setData('lists', data.lists);
     setData('tasks', data.tasks);
 }
+
+
+
+
 
 // 最右侧
 // 标记完成按钮
@@ -456,7 +461,7 @@ function saveEdit() {
 
     $('.rightContent')[0].style.display = 'block';
     $('.rightHideWrap')[0].style.display = 'none';
-    // 刷新页面，数据没有刷新
+    // XXX：刷新页面，本地数据没有刷新
     $('#hidTitle').innerHTML = $('#inputTitle').value; // 更新标题
     $('#hidDate').innerHTML = $('#inputDate').value; // 更新日期
     $('#taskContent').innerHTML = $('#inputContent').value // 更新内容
@@ -468,18 +473,47 @@ function saveEdit() {
     // TODO(繁琐)
     // 刷新数据
     each(data.tasks, function (task) {
-        var title = $('.selectedTask')[0].innerHTML;    // 选中任务的标题
-        if (task.title === title) {
-            task.title = $('#inputTitle').value;        // 标题
-            task.time = $('#inputDate').value;          // 日期
-            task.content = $('#inputContent').value;    // 任务内容
-            $('.selectedTask')[0].innerHTML = $('#hidTitle').innerHTML; // 更新选中任务标题
-            $('.selectedTask')[0].previousSibling.innerHTML = $('#hidDate').innerHTML; // 选中任务时间
+        // 为了避免与新增任务的保存按钮冲突，$('.selectedTask')[0]起了作用
+        var title;
+        if ($('.selectedTask')[0]) {
+            title = $('.selectedTask')[0].innerHTML;    // 选中任务的标题
 
+            if (task.title === title) {
+                task.title = $('#inputTitle').value;        // 标题
+                task.time = $('#inputDate').value;          // 日期
+                task.content = $('#inputContent').value;    // 任务内容
+                $('.selectedTask')[0].innerHTML = $('#hidTitle').innerHTML; // 更新选中任务标题
+                $('.selectedTask')[0].previousSibling.innerHTML = $('#hidDate').innerHTML; // 选中任务时间
+
+            }
         }
+        updateData();
     })
-    updateData();
+    if (!$('.selectedTask')[0]) {
+        $('#tasksList').innerHTML += '<li><ul class="data-task" isDone="false"><li>' + $('#inputDate').value + '</li><li class="task-title">' + $('#inputTitle').value + '</li></li>';
+        // node = document.createElement('li');
+        // node.innerHTML ='<ul class="data-task" isDone="false"><li>' + $('#inputDate').value + '</li><li class="task-title">' + $('#inputTitle').value + '</li>';
+        // $('#tasksList').appendChild(node);
+        var pra1 = $('.selectedCate')[0].parentNode.getAttribute('data-cate-id');   // 主分类
+        var pra2 = $('.selectedCate')[0].getAttribute('data-list-id') // 子分类
+        var newTaskList = new TaskList(pra1, pra2);
+        var newTask = new TaskDetail(newTaskList, $('#inputTitle').value, $('#inputDate').value, $('#inputContent').value, false);
+        data.tasks.push(newTask);
+        updateData();
+    }
+
 }
+
+// 添加任务
+$.click($('#addTask'), addATask);
+function addATask() {
+    $('.rightContent')[0].style.display = 'none';
+    $('.rightHideWrap')[0].style.display = 'block';
+    // 初始化编辑界面
+    // $('.selectedCate')[0]
+    removeClass($('.selectedTask')[0], 'selectedTask');
+}
+
 
 // 取消编辑按钮
 $.click($('#return'), returnEdit);
@@ -488,5 +522,4 @@ function returnEdit() {
     $('.rightHideWrap')[0].style.display = 'none';
 }
 
-var cates = '' ;
-console.log(cates);
+
