@@ -23,13 +23,24 @@
 
 function initSelectCate() {
     var num = 1;
-    $('#selectCate').innerHTML = '<option value =0' + ' selected>新增主分类</option>';
+    // each(data.cates, function (cate) {
+    // 用each()不能给第一个加selected
+    // TODO
+    // 新增主分类
+    $('#selectCate').innerHTML = '<option value = 0 >' + '新增主分类' + '</option>';
+//     for (var i = 0; i < data.cates.length; i++) {
+//         if (data.cates[0]) {
+//             $('#selectCate').innerHTML = '<option value =' + num + ' selected>' + data.cates[0].category + '</option>';
+//         }
+//         $('#selectCate').innerHTML += '<option value =' + num + '>' + data.cates[i].category + '</option>';
+//             num++;
+//     }
+// }
     each(data.cates, function (cate) {
         $('#selectCate').innerHTML += '<option value =' + num + '>' + cate.category + '</option>';
         num++;
     })
 }
-
 function initSelected() {
     // addClass($('[data-cate-id=默认分类]'), 'selected');  会连带子节点一起取到
     // addClass($('#cateList span')[1], 'selected')
@@ -97,13 +108,7 @@ var ulList = document.getElementsByClassName('data-cate');
 var statusList = document.getElementsByClassName('data-status');
 var tasksList = $('.data-lists');
 
-for (var i = 0; i < ulList.length; i++) {
-    var liList = ulList[i].getElementsByTagName('li');
-    each(liList, function (item) {
-        listItem.push(item);
-    })
-}
-console.log(listItem);
+
 // 切换样式
 // 无论点击多少次都应该是只添加一次类名
 // 所以添加类名前应该先判断是否已经有‘selected'
@@ -122,6 +127,14 @@ function changeClassName(event) {
             targetParentClassName = target.parentNode.className;
         switch (targetParentClassName) {
             case 'data-cate':
+                for (var i = 0; i < ulList.length; i++) {
+                    updateData();
+                    var liList = ulList[i].getElementsByTagName('li');
+                    each(liList, function (item) {
+                        listItem.push(item);
+                    })
+                }
+                // console.log(listItem);
                 for (var i = 0; i < listItem.length; i++) {
                     if (listItem[i].className === cateClassName) {
                         removeClass(listItem[i], cateClassName);
@@ -129,6 +142,21 @@ function changeClassName(event) {
                 }
                 addClass(target, cateClassName);
                 console.log(target);
+                // var taskAll = tasksList[0].querySelectorAll('.task-title');
+
+                // for (var i = 0; i < taskAll.length; i++) {
+
+                //     if (taskAll[i] === target) {
+                //         each(taskAll, function (item) {
+                //             console.log('a')
+                //             if (hasClass(item, taskClassName)) {
+                //                 removeClass(item, taskClassName);
+                //             }
+                //             console.log('b')
+                //         })
+                //         addClass(target, taskClassName);
+                //     }
+                // }
                 break;
 
             // TODO
@@ -191,7 +219,7 @@ function changeClassName(event) {
                     }
                 }
                 break;
-        }
+            }
     }
 }
 // $.delegate(ulList, 'li', 'click', changeClassName);
@@ -361,9 +389,7 @@ var addCate = $('#addCate'),
     cancel = $('#cancel'),
     confirm = $('#confirm'),
     coverStyle = $('#cover').style,
-    selectCate = $('#selectCate'),
-    newCateName,
-    outCateName;
+    selectCate = $('#selectCate');
 
     // newCateName = $('#newCateName').value
     // XXX：不要在这里设置，这样newCateName是''
@@ -373,14 +399,7 @@ var node;
 // 监听下拉框改变分类名
 selectCate.onchange = function () {
     each(selectCate, function (theCate) {
-        // 主分类
-
-        // 子分类
         if (theCate.selected) {
-            if (theCate.textContent === '新建主分类') {
-                outCateName = $('#newCateName').value;
-
-            }
             newCateName = $('#newCateName').value; // 新建子分类名
             cate = theCate.innerHTML;
             console.log($('[data-cate-id='+cate+']'));
@@ -394,19 +413,20 @@ $.click(cancel, function () {
 });
 $.click(confirm, addACate);
 function addACate() {
-    if (outCateName!=='') {
-        $('#cateList').innerHTML += '<li data-cate-id='+ outCateName +'></li>'
-    }
+    removeClass($('.selectedCate')[0], 'selectedCate');
+
     node = document.createElement('li');
     var newCateName = $('#newCateName').value;
     node.setAttribute('data-list-id', newCateName);
     node.innerHTML ='<span class="fa fa-file-o fa-fw"></span>' + newCateName + '(' + toCount('data.lists', newCateName) + ')'+ '<span class="fa fa-minus-circle"></span>';
     $('[data-cate-id='+cate+']').children[1].appendChild(node);
+    addClass(node, 'selectedCate');
     // 本地保存
     newCateName = new TaskList(cate, newCateName);
     data.lists.push(newCateName);
     updateData();
-
+    // removeClass($('.selectedCate')[0], 'selectedCate');
+    // addClass()
     coverStyle.display = 'none';
     // TODO：正则排除重复空类名
 }
@@ -490,10 +510,10 @@ function saveEdit() {
         updateData();
     })
     if (!$('.selectedTask')[0]) {
-        $('#tasksList').innerHTML += '<li><ul class="data-task" isDone="false"><li>' + $('#inputDate').value + '</li><li class="task-title">' + $('#inputTitle').value + '</li></li>';
-        // node = document.createElement('li');
-        // node.innerHTML ='<ul class="data-task" isDone="false"><li>' + $('#inputDate').value + '</li><li class="task-title">' + $('#inputTitle').value + '</li>';
-        // $('#tasksList').appendChild(node);
+        // $('#tasksList').innerHTML += '<li><ul class="data-task" isDone="false"><li>' + $('#inputDate').value + '</li><li class="task-title">' + $('#inputTitle').value + '</li></li>';
+        node = document.createElement('li');
+        node.innerHTML ='<ul class="data-task" isDone="false"><li>' + $('#inputDate').value + '</li><li class="task-title">' + $('#inputTitle').value + '</li>';
+        $('#tasksList').appendChild(node);
         var pra1 = $('.selectedCate')[0].parentNode.getAttribute('data-cate-id');   // 主分类
         var pra2 = $('.selectedCate')[0].getAttribute('data-list-id') // 子分类
         var newTaskList = new TaskList(pra1, pra2);
