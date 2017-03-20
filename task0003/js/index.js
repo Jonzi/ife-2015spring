@@ -21,6 +21,21 @@
 
 })();
 
+// 查看所有任务
+$.click($('#allTasks'), showAll)
+function showAll() {
+    if ($('.selectedCate')[0]) {
+        removeClass($('.selectedCate')[0], 'selectedCate');
+    }
+    addClass($('#allTasks'), 'selectedCate');
+    // removeClass($('.selectedCate')[0], 'selectedCate');
+    updateData();
+    $('#tasksList').innerHTML = '';
+    each(data.tasks, function (task) {
+        $('#tasksList').innerHTML += '<li><ul class = data-task isDone ='+ task.isDone + '><li>' +task.time+ '</li><li class = task-title>'  +task.title+'</li></ul></li>'
+    })
+}
+
 function initSelectCate() {
     updateData();
     var num = 1;
@@ -52,7 +67,7 @@ function initSelected() {
 
 
 function countAllTask() {
-    $('#taskNum').innerHTML = '(' + toCount('data.tasks') + ')';
+    $('#taskNum').innerHTML = '(' + toCount('allTasks') + ')';
 }
 
 function addCate(obj) {
@@ -64,7 +79,7 @@ function addCate(obj) {
         liCate = document.createElement('li');
         liCate.setAttribute('data-cate-id', obj.category);
         liCate.innerHTML =  '<span><i class="fa fa-folder-open fa-fw"></i>'
-        + '<span>' + obj.category + '(' + toCount('data.cates', obj.category) + ')' + '</span>' + '<i class="fa fa-minus-circle"></i></span>';
+        + '<span>' + obj.category + '(' + toCount('data.cates', obj.category) + ')' + '</span>' + '<i class="fa fa-minus-circle cate"></i></span>';
         $('#cateList').appendChild(liCate);
 
     }
@@ -115,12 +130,12 @@ var tasksList = $('.data-lists');
 // 所以添加类名前应该先判断是否已经有‘selected'
 
 // TODO
-// 切换status显示清单详情和点击子分类显示清单详情
 // 有冗余的代码
 function changeClassName(event) {
+    updateData();
     event = event || window.event;
     var target = event.target || event.srcElement;
-    stopBubble(event);
+    // stopBubble(event);
     if (target.parentNode) {
         var cateClassName = 'selectedCate', // 左侧子分类
             statusClassName = 'selectedStatus', // 中部状态栏
@@ -128,19 +143,25 @@ function changeClassName(event) {
             targetParentClassName = target.parentNode.className;
         switch (targetParentClassName) {
             case 'data-cate':
+                if (hasClass($('#allTasks'), 'selectedCate')) {
+                    removeClass($('#allTasks'), 'selectedCate');
+                }
                 for (var i = 0; i < ulList.length; i++) {
                     updateData();
                     var liList = ulList[i].getElementsByTagName('li');
                     each(liList, function (item) {
                         listItem.push(item);
+                        console.log(listItem);
                     })
                 }
                 // console.log(listItem);
+
                 for (var i = 0; i < listItem.length; i++) {
                     if (listItem[i].className === cateClassName) {
                         removeClass(listItem[i], cateClassName);
                     }
                 }
+                listItem = []; // 不然每次点击都会叠加listItem
                 addClass(target, cateClassName);
                 console.log(target);
                 // var taskAll = tasksList[0].querySelectorAll('.task-title');
@@ -174,32 +195,61 @@ function changeClassName(event) {
                     listId, // 选中子分类名称
                     data_tasks = $('.data-task'), // 中间显示的所有任务（时间+标题的ul）
                     data_lists = document.querySelectorAll('[data-list-id]'); // 取左侧所有子分类
+
                     each(data_lists, function (item) {  // 在所有子分类中选出选中的那一个
                         if (hasClass(item, cateClassName)) {
                             listId = item.getAttribute('data-list-id');
                         }
                     })
                 $('#tasksList').innerHTML = '';
-                if (id === 'all') {
-                    each(data.tasks, function (task) {
-                        if (task.cateList[1] === listId) {
-                            $('#tasksList').innerHTML += '<li><ul class = data-task isDone ='+ task.isDone + '><li>' +task.time+ '</li><li class = task-title isDone ='+ task.isDone + '>'+task.title+'</li></ul></li>';
-                        }
-                    });
-                } if (id === 'finished') {
-                    each(data.tasks, function (task) {
-                        if (task.cateList[1] === listId && task.isDone) {
-                            $('#tasksList').innerHTML += '<li><ul class = data-task isDone ='+ task.isDone + '><li>' +task.time+ '</li><li class = task-title isDone ='+ task.isDone + '>'+task.title+'</li></ul></li>';
-                        }
-                    });
-                } if (id === 'unfinished') {
-                    each(data.tasks, function (task) {
-                        console.log(listId);
-                        if (task.cateList[1] === listId && !task.isDone) {
-                            $('#tasksList').innerHTML += '<li><ul class = data-task isDone ='+ task.isDone + '><li>' +task.time+ '</li><li class = task-title isDone ='+ task.isDone + '>'+task.title+'</li></ul></li>';
-                        }
-                    });
+                // 子分类的status切换
+                if (!hasClass($('#allTasks'), 'selectedCate')) {
+                    if (id === 'all') {
+                        each(data.tasks, function (task) {
+                            if (task.cateList[1] === listId) {
+                                $('#tasksList').innerHTML += '<li><ul class = data-task isDone ='+ task.isDone + '><li>' +task.time+ '</li><li class = task-title isDone ='+ task.isDone + '>'+task.title+'</li></ul></li>';
+                            }
+                        });
+                    } if (id === 'finished') {
+                        each(data.tasks, function (task) {
+                            if (task.cateList[1] === listId && task.isDone) {
+                                $('#tasksList').innerHTML += '<li><ul class = data-task isDone ='+ task.isDone + '><li>' +task.time+ '</li><li class = task-title isDone ='+ task.isDone + '>'+task.title+'</li></ul></li>';
+                            }
+                        });
+                    } if (id === 'unfinished') {
+                        each(data.tasks, function (task) {
+                            console.log(listId);
+                            if (task.cateList[1] === listId && !task.isDone) {
+                                $('#tasksList').innerHTML += '<li><ul class = data-task isDone ='+ task.isDone + '><li>' +task.time+ '</li><li class = task-title isDone ='+ task.isDone + '>'+task.title+'</li></ul></li>';
+                            }
+                        });
+                    }
                 }
+
+                // 所有任务的status切换
+                if (hasClass($('#allTasks'), 'selectedCate')) {
+                    if (id === 'all') {
+                        each(data.tasks, function (task) {
+
+                                $('#tasksList').innerHTML += '<li><ul class = data-task isDone ='+ task.isDone + '><li>' +task.time+ '</li><li class = task-title isDone ='+ task.isDone + '>'+task.title+'</li></ul></li>';
+
+                        });
+                    } if (id === 'finished') {
+                        each(data.tasks, function (task) {
+                            if (task.isDone) {
+                                $('#tasksList').innerHTML += '<li><ul class = data-task isDone ='+ task.isDone + '><li>' +task.time+ '</li><li class = task-title isDone ='+ task.isDone + '>'+task.title+'</li></ul></li>';
+                            }
+                        });
+                    } if (id === 'unfinished') {
+                        each(data.tasks, function (task) {
+                            console.log(listId);
+                            if (!task.isDone) {
+                                $('#tasksList').innerHTML += '<li><ul class = data-task isDone ='+ task.isDone + '><li>' +task.time+ '</li><li class = task-title isDone ='+ task.isDone + '>'+task.title+'</li></ul></li>';
+                            }
+                        });
+                    }
+                }
+
 
 
                 break;
@@ -224,7 +274,7 @@ function changeClassName(event) {
     }
 }
 // $.delegate(ulList, 'li', 'click', changeClassName);
-delegateClickEvent(ulList, changeClassName);
+delegateClickEvent($('.data-cate'), changeClassName);
 delegateClickEvent(statusList, changeClassName);
 delegateClickEvent(tasksList, changeClassName);
 
@@ -286,7 +336,7 @@ function addList(obj) {
         ulList.className = 'data-cate';
         ulList.style.padding = '0 0 0 20px';
         ulList.innerHTML=  '<li data-list-id=' + obj[1] + '><span class="fa fa-file-o fa-fw"></span>'
-        + obj[1] + '(' + toCount('data.lists', obj[1]) + ')' + '<span class="fa fa-minus-circle"></span></li>';
+        + obj[1] + '(' + toCount('data.lists', obj[1]) + ')' + '<span class="fa fa-minus-circle list"></span></li>';
         liList.appendChild(ulList);
         return; // 不return会重复第一个任务
     }
@@ -296,7 +346,7 @@ function addList(obj) {
         console.log(obj[1]);
         // console.log(toCount(obj[1]))
         liList.getElementsByTagName('ul')[0].innerHTML +=  '<li data-list-id=' + obj[1] + '><span class="fa fa-file-o fa-fw"></span>'
-    + obj[1] + '(' + toCount('data.lists', obj[1]) + ')'+ '<span class="fa fa-minus-circle"></span></li>';
+    + obj[1] + '(' + toCount('data.lists', obj[1]) + ')'+ '<span class="fa fa-minus-circle list"></span></li>';
     }
 
 
@@ -312,13 +362,17 @@ function toCount(arr, type) {
 
     // }
     // return num;
-
+    // updateData();
     var count = 0;
     switch (arr) {
+        case 'allTasks':
+            each(data.tasks, function (task) {
+                count++;
+            })
         case 'data.lists':
             // var count = 0;
-            each(data.tasks, function (item) {
-                if (!item.isDone && item.cateList[1] === type) {
+            each(data.tasks, function (task) {
+                if (!task.isDone && task.cateList[1] === type) {
                     count++;
             }
         });
@@ -326,16 +380,16 @@ function toCount(arr, type) {
             break;
         case 'data.cates':
             // var count = 0;
-            each(data.tasks, function (item) {
-                if (!item.isDone && item.cateList[0] === type) {
+            each(data.tasks, function (task) {
+                if (!task.isDone && task.cateList[0] === type) {
                     count++;
                 }
             })
             return count;
             break;
         case 'data.tasks':
-            each(data.tasks, function (item) {
-                if (!item.isDone) {
+            each(data.tasks, function (task) {
+                if (!task.isDone) {
                     count++;
                 }
             });
@@ -421,23 +475,24 @@ function addACate() {
     alert('confirm')
 
     node = document.createElement('li');
+    // 新增主分类
     if ($('#selectCate')[0].selected) {
-
         var outCateName = $('#newCateName').value;
         node.setAttribute('data-cate-id', outCateName);
         node.innerHTML = '<span><i class="fa fa-folder-open fa-fw"></i>'
-        + '<span>' + outCateName + '(' + toCount('data.cates', outCateName) + ')' + '</span>' + '<i class="fa fa-minus-circle"></i></span><ul data-cate-id="IFE" class="data-cate" style="padding: 0px 0px 0px 20px;">';
+        + '<span>' + outCateName + '(' + toCount('data.cates', outCateName) + ')' + '</span>' + '<i class="fa fa-minus-circle cate"></i></span><ul data-cate-id=' + outCateName + '' + ' class="data-cate" style="padding: 0px 0px 0px 20px;"></ul>';
         $('#cateList').appendChild(node);
         outCateName = new Category(outCateName);
         data.cates.push(outCateName);
         updateData();
+        delegateClickEvent($('.data-cate'), changeClassName);
         initSelectCate(); // 更新下拉框
     }
     if (!$('#selectCate')[0].selected) {
         // node = document.createElement('li');
         var newCateName = $('#newCateName').value;
         node.setAttribute('data-list-id', newCateName);
-        node.innerHTML ='<span class="fa fa-file-o fa-fw"></span>' + newCateName + '(' + toCount('data.lists', newCateName) + ')'+ '<span class="fa fa-minus-circle"></span>';
+        node.innerHTML ='<span class="fa fa-file-o fa-fw"></span>' + newCateName + '(' + toCount('data.lists', newCateName) + ')'+ '<span class="fa fa-minus-circle list"></span>';
         $('[data-cate-id='+cate+']').children[1].appendChild(node);
         removeClass($('.selectedCate')[0], 'selectedCate');
         addClass(node, 'selectedCate');
@@ -556,6 +611,7 @@ function saveEdit() {
         var newTask = new TaskDetail(newTaskList, $('#inputTitle').value, $('#inputDate').value, $('#inputContent').value, false);
         data.tasks.push(newTask);
         updateData();
+
     }
 
 }
@@ -563,6 +619,9 @@ function saveEdit() {
 // 添加任务
 $.click($('#addTask'), addATask);
 function addATask() {
+    $('#inputTitle').value = '';
+    $('#inputContent').value = '';
+    $('#inputDate').value = '';
     $('.rightContent')[0].style.display = 'none';
     $('.rightHideWrap')[0].style.display = 'block';
     // 初始化编辑界面
@@ -578,4 +637,26 @@ function returnEdit() {
     $('.rightHideWrap')[0].style.display = 'none';
 }
 
-
+// 删除子分类
+delegateClickEvent($('.fa-minus-circle'), deleteCate);
+function deleteCate(event) {
+    event = event || window.event;
+    var target = event.target || event.srcElement;
+    var father = target.parentNode;
+    var dataid = father.getAttribute('data-list-id');
+    var grandF = target.parentNode.parentNode;
+    var List = document.querySelectorAll('[data-list-id]');
+    var Cate = document.querySelectorAll('[data-cate-id]');
+    if (hasClass(target, 'list')) {
+        console.log(hasClass(target, 'list'))
+        grandF.removeChild(father);
+        // var newCateName = new TaskList(cate, newCateName);
+        data.lists.pop(dataid);
+        each(data.tasks, function (task) {
+            if (task.cateList === dataid) {
+                data.tasks.pop(task);
+            }
+        })
+        updateData();
+    }
+}
