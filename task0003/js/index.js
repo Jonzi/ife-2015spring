@@ -22,6 +22,7 @@
 })();
 
 function initSelectCate() {
+    updateData();
     var num = 1;
     // each(data.cates, function (cate) {
     // 用each()不能给第一个加selected
@@ -394,16 +395,20 @@ var addCate = $('#addCate'),
     // newCateName = $('#newCateName').value
     // XXX：不要在这里设置，这样newCateName是''
 
-var cate = $('#selectCate').options[0].innerHTML;
-var node;
+// var cate = $('#selectCate').options[0].innerHTML;
+var cate, node, newCateName, outCateName;
 // 监听下拉框改变分类名
 selectCate.onchange = function () {
     each(selectCate, function (theCate) {
         if (theCate.selected) {
             newCateName = $('#newCateName').value; // 新建子分类名
             cate = theCate.innerHTML;
-            console.log($('[data-cate-id='+cate+']'));
-            console.log($('[data-cate-id='+cate+']').children[1]);
+            if (cate === '新增主分类') {
+                outCateName = $('#newCateName').value;
+                // console.log($('[data-cate-id='+cate+']'));
+                // console.log($('[data-cate-id='+cate+']').children[1]);
+            }
+
         }
     });
 }
@@ -413,22 +418,53 @@ $.click(cancel, function () {
 });
 $.click(confirm, addACate);
 function addACate() {
-    removeClass($('.selectedCate')[0], 'selectedCate');
+    alert('confirm')
 
     node = document.createElement('li');
-    var newCateName = $('#newCateName').value;
-    node.setAttribute('data-list-id', newCateName);
-    node.innerHTML ='<span class="fa fa-file-o fa-fw"></span>' + newCateName + '(' + toCount('data.lists', newCateName) + ')'+ '<span class="fa fa-minus-circle"></span>';
-    $('[data-cate-id='+cate+']').children[1].appendChild(node);
-    addClass(node, 'selectedCate');
-    // 本地保存
-    newCateName = new TaskList(cate, newCateName);
-    data.lists.push(newCateName);
-    updateData();
-    // removeClass($('.selectedCate')[0], 'selectedCate');
-    // addClass()
+    if ($('#selectCate')[0].selected) {
+
+        var outCateName = $('#newCateName').value;
+        node.setAttribute('data-cate-id', outCateName);
+        node.innerHTML = '<span><i class="fa fa-folder-open fa-fw"></i>'
+        + '<span>' + outCateName + '(' + toCount('data.cates', outCateName) + ')' + '</span>' + '<i class="fa fa-minus-circle"></i></span><ul data-cate-id="IFE" class="data-cate" style="padding: 0px 0px 0px 20px;">';
+        $('#cateList').appendChild(node);
+        outCateName = new Category(outCateName);
+        data.cates.push(outCateName);
+        updateData();
+        initSelectCate(); // 更新下拉框
+    }
+    if (!$('#selectCate')[0].selected) {
+        // node = document.createElement('li');
+        var newCateName = $('#newCateName').value;
+        node.setAttribute('data-list-id', newCateName);
+        node.innerHTML ='<span class="fa fa-file-o fa-fw"></span>' + newCateName + '(' + toCount('data.lists', newCateName) + ')'+ '<span class="fa fa-minus-circle"></span>';
+        $('[data-cate-id='+cate+']').children[1].appendChild(node);
+        removeClass($('.selectedCate')[0], 'selectedCate');
+        addClass(node, 'selectedCate');
+        // 本地保存
+        newCateName = new TaskList(cate, newCateName);
+        data.lists.push(newCateName);
+        updateData();
+        // removeClass($('.selectedCate')[0], 'selectedCate');
+        // addClass()
+
+        // TODO：正则排除重复空类名
+    }
     coverStyle.display = 'none';
-    // TODO：正则排除重复空类名
+    // node = document.createElement('li');
+    // var newCateName = $('#newCateName').value;
+    // node.setAttribute('data-list-id', newCateName);
+    // node.innerHTML ='<span class="fa fa-file-o fa-fw"></span>' + newCateName + '(' + toCount('data.lists', newCateName) + ')'+ '<span class="fa fa-minus-circle"></span>';
+    // $('[data-cate-id='+cate+']').children[1].appendChild(node);
+    // addClass(node, 'selectedCate');
+    // // 本地保存
+    // newCateName = new TaskList(cate, newCateName);
+    // data.lists.push(newCateName);
+    // updateData();
+    // // removeClass($('.selectedCate')[0], 'selectedCate');
+    // // addClass()
+    // coverStyle.display = 'none';
+    // // TODO：正则排除重复空类名
 }
 $.on(addCate, 'click', function () {
     // 不保留上次选中项
