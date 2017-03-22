@@ -19,29 +19,33 @@ h2:hover,h3:hover, h4:hover, h6:hover {
     background-color: #ebebeb;
 }
 
+li {
+    cursor: pointer;
+    list-style-type: none;
+}
+
+.data-cate > li:hover {
+    background-color: #ebebeb;
+}
+.task-title:hover{
+    background-color: #ebebeb;
+}
 #cateList ul {
     font-weight: normal;
     line-height: 2;
     /* text-align: center; */
 }
 
-i.fa.fa-minus-circle {
-    /*opacity: 0;*/
-    float: right;
-
-    /* right: 0; */
-    /* position: relative; */
-    /* margin: inherit; */
-}
-
 span.fa.fa-minus-circle {
     /*opacity: 0;*/
     float: right;
     line-height: 2;
+    opacity: 0;
     /* right: 0; */
     /* position: relative; */
     /* margin: inherit; */
 }
+
 h4 {
     font-weight: normal;
 }
@@ -50,10 +54,11 @@ ul#taskList {
     border-top: 1px dashed #bbbbbb;
 }
 
-li {
-    list-style-type: none;
+#cateList li {
+    margin-left: 15px;
+    /*设置跟span.minus-circle相同*/
+    line-height: 2;
 }
-
 
 header {
     width: 100%;
@@ -96,11 +101,11 @@ h2 {
     position: relative;
     background-color: #FFFFFF;
     margin-right: 16px;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 
-#cateList li {
-    margin-left: 15px;
-}
+
 
 #addCate, #addTask {
     position: absolute;
