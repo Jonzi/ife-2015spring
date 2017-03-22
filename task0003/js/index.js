@@ -19,21 +19,28 @@
     // 初始化浮层下拉列表
     initSelectCate();
 
+    // 初始化分类颜色
+    initColor();
+
+    // 初始化删除按钮
+    initMinus();
+
 })();
 
 // 查看所有任务
 $.click($('#allTasks'), showAll)
 function showAll() {
+    updateData();
     if ($('.selectedCate')[0]) {
         removeClass($('.selectedCate')[0], 'selectedCate');
     }
     addClass($('#allTasks'), 'selectedCate');
     // removeClass($('.selectedCate')[0], 'selectedCate');
-    updateData();
     $('#tasksList').innerHTML = '';
     each(data.tasks, function (task) {
         $('#tasksList').innerHTML += '<li><ul class = data-task isDone ='+ task.isDone + '><li>' +task.time+ '</li><li class = task-title>'  +task.title+'</li></ul></li>'
     })
+    initColor();
 }
 
 function initSelectCate() {
@@ -78,8 +85,8 @@ function addCate(obj) {
     if (!liCate) {
         liCate = document.createElement('li');
         liCate.setAttribute('data-cate-id', obj.category);
-        liCate.innerHTML =  '<span><i class="fa fa-folder-open fa-fw"></i>'
-        + '<span>' + obj.category + '(' + toCount('data.cates', obj.category) + ')' + '</span>' + '<i class="fa fa-minus-circle cate"></i></span>';
+        liCate.innerHTML =  '<span class="fa fa-folder-open fa-fw"></span>'
+         + obj.category + '(' + toCount('data.cates', obj.category) + ')' + '<span class="fa fa-minus-circle cate"></span>';
         $('#cateList').appendChild(liCate);
 
     }
@@ -205,17 +212,23 @@ function changeClassName(event) {
                 // 子分类的status切换
                 if (!hasClass($('#allTasks'), 'selectedCate')) {
                     if (id === 'all') {
+
                         each(data.tasks, function (task) {
                             if (task.cateList[1] === listId) {
                                 $('#tasksList').innerHTML += '<li><ul class = data-task isDone ='+ task.isDone + '><li>' +task.time+ '</li><li class = task-title isDone ='+ task.isDone + '>'+task.title+'</li></ul></li>';
                             }
                         });
+                        initColor();
+
+                        // $('#tasksList').style.color = 'rgba(0, 0, 0,1)';
                     } if (id === 'finished') {
                         each(data.tasks, function (task) {
                             if (task.cateList[1] === listId && task.isDone) {
                                 $('#tasksList').innerHTML += '<li><ul class = data-task isDone ='+ task.isDone + '><li>' +task.time+ '</li><li class = task-title isDone ='+ task.isDone + '>'+task.title+'</li></ul></li>';
                             }
                         });
+                        initColor();
+                        // $('#tasksList').style.color = 'rgba(0, 0, 0, 0.24)';
                     } if (id === 'unfinished') {
                         each(data.tasks, function (task) {
                             console.log(listId);
@@ -223,6 +236,7 @@ function changeClassName(event) {
                                 $('#tasksList').innerHTML += '<li><ul class = data-task isDone ='+ task.isDone + '><li>' +task.time+ '</li><li class = task-title isDone ='+ task.isDone + '>'+task.title+'</li></ul></li>';
                             }
                         });
+                        // $('#tasksList').style.color = 'rgba(0, 0, 0,1)';
                     }
                 }
 
@@ -234,19 +248,25 @@ function changeClassName(event) {
                                 $('#tasksList').innerHTML += '<li><ul class = data-task isDone ='+ task.isDone + '><li>' +task.time+ '</li><li class = task-title isDone ='+ task.isDone + '>'+task.title+'</li></ul></li>';
 
                         });
+                        initColor();
+                        // $('#tasksList').style.color = 'rgba(0, 0, 0,1)';
                     } if (id === 'finished') {
                         each(data.tasks, function (task) {
                             if (task.isDone) {
                                 $('#tasksList').innerHTML += '<li><ul class = data-task isDone ='+ task.isDone + '><li>' +task.time+ '</li><li class = task-title isDone ='+ task.isDone + '>'+task.title+'</li></ul></li>';
                             }
                         });
+                        initColor();
+                        // $('#tasksList').style.color = 'rgba(0, 0, 0, 0.24)';
                     } if (id === 'unfinished') {
+
                         each(data.tasks, function (task) {
                             console.log(listId);
                             if (!task.isDone) {
                                 $('#tasksList').innerHTML += '<li><ul class = data-task isDone ='+ task.isDone + '><li>' +task.time+ '</li><li class = task-title isDone ='+ task.isDone + '>'+task.title+'</li></ul></li>';
                             }
                         });
+                        // $('#tasksList').style.color = 'rgba(0, 0, 0,1)';
                     }
                 }
 
@@ -291,12 +311,14 @@ function changeMedium(event) {
         each(data.tasks, function (task) {
             if (task.cateList[1] === listId && text === '所有') {
                 $('#tasksList').innerHTML += '<li><ul class = data-task isDone ='+ task.isDone + '><li>' +task.time+ '</li><li class = task-title isDone ='+ task.isDone + '>'+task.title+'</li></ul></li>';
+                initColor();
             } if (task.cateList[1] === listId && text === '已完成' && task.isDone) {
 
                 console.log(listId);
                 if (task.cateList[1] === listId ) {
                     $('#tasksList').innerHTML += '<li><ul class = data-task isDone ='+ task.isDone + '><li>' +task.time+ '</li><li class = task-title isDone ='+ task.isDone + '>'+task.title+'</li></ul></li>';
                 }
+                initColor();
             } if (task.cateList[1] === listId && text === '未完成' && !task.isDone) {
 
                         console.log(listId);
@@ -362,7 +384,7 @@ function toCount(arr, type) {
 
     // }
     // return num;
-    // updateData();
+    updateData();
     var count = 0;
     switch (arr) {
         case 'allTasks':
@@ -479,8 +501,8 @@ function addACate() {
     if ($('#selectCate')[0].selected) {
         var outCateName = $('#newCateName').value;
         node.setAttribute('data-cate-id', outCateName);
-        node.innerHTML = '<span><i class="fa fa-folder-open fa-fw"></i>'
-        + '<span>' + outCateName + '(' + toCount('data.cates', outCateName) + ')' + '</span>' + '<i class="fa fa-minus-circle cate"></i></span><ul data-cate-id=' + outCateName + '' + ' class="data-cate" style="padding: 0px 0px 0px 20px;"></ul>';
+        node.innerHTML = '<span class="fa fa-folder-open fa-fw"></span>'
+         + outCateName + '(' + toCount('data.cates', outCateName) + ')' + '<span class="fa fa-minus-circle cate"></span><ul data-cate-id=' + outCateName + '' + ' class="data-cate" style="padding: 0px 0px 0px 20px;"></ul>';
         $('#cateList').appendChild(node);
         outCateName = new Category(outCateName);
         data.cates.push(outCateName);
@@ -493,7 +515,7 @@ function addACate() {
         var newCateName = $('#newCateName').value;
         node.setAttribute('data-list-id', newCateName);
         node.innerHTML ='<span class="fa fa-file-o fa-fw"></span>' + newCateName + '(' + toCount('data.lists', newCateName) + ')'+ '<span class="fa fa-minus-circle list"></span>';
-        $('[data-cate-id='+cate+']').children[1].appendChild(node);
+        $('[data-cate-id='+cate+']').children[2].appendChild(node);
         removeClass($('.selectedCate')[0], 'selectedCate');
         addClass(node, 'selectedCate');
         // 本地保存
@@ -506,6 +528,7 @@ function addACate() {
         // TODO：正则排除重复空类名
     }
     coverStyle.display = 'none';
+    initMinus();
     // node = document.createElement('li');
     // var newCateName = $('#newCateName').value;
     // node.setAttribute('data-list-id', newCateName);
@@ -545,9 +568,10 @@ $.click($('#done'), doneTask);
 function doneTask() {
         var title = $('.selectedTask')[0].innerHTML;
         each(data.tasks, function (task) {
-        if (task.title === title) {
-            task.isDone = true;
-        }
+            if (task.title === title) {
+                task.isDone = true;
+            }
+        $('.selectedTask')[0].style.color = 'rgba(0, 0, 0, 0.24)'
         console.log('check task')
         })
         updateData();
@@ -627,6 +651,7 @@ function addATask() {
     // 初始化编辑界面
     // $('.selectedCate')[0]
     removeClass($('.selectedTask')[0], 'selectedTask');
+    initMinus();
 }
 
 
@@ -637,26 +662,91 @@ function returnEdit() {
     $('.rightHideWrap')[0].style.display = 'none';
 }
 
-// 删除子分类
+// 删除分类
 delegateClickEvent($('.fa-minus-circle'), deleteCate);
 function deleteCate(event) {
     event = event || window.event;
     var target = event.target || event.srcElement;
-    var father = target.parentNode;
-    var dataid = father.getAttribute('data-list-id');
-    var grandF = target.parentNode.parentNode;
-    var List = document.querySelectorAll('[data-list-id]');
-    var Cate = document.querySelectorAll('[data-cate-id]');
+    var father = target.parentNode;      // [data-list-id]
+    var dataid // 'list2'
+    var grandFather = father.parentNode; // [data-cate-id]
+    // 删除子分类
     if (hasClass(target, 'list')) {
-        console.log(hasClass(target, 'list'))
-        grandF.removeChild(father);
-        // var newCateName = new TaskList(cate, newCateName);
-        data.lists.pop(dataid);
-        each(data.tasks, function (task) {
-            if (task.cateList === dataid) {
-                data.tasks.pop(task);
+        dataid = father.getAttribute('data-list-id'); // 'list2'
+        grandFather.removeChild(father);
+        for (var i = 0; i < data.lists.length; i++) {
+            if (data.lists[i][1] === dataid) {
+                data.lists.splice(i, 1);
             }
-        })
+        }
+        for (var j = 0; j < data.tasks.length; j++) {
+            if (data.tasks[j].cateList[1] === dataid) {
+                data.tasks.splice(j, 1);
+                j-=1; // 不然只能删除一个任务
+            }
+        }
+        updateData();
+    }
+    // 删除主分类
+    if (hasClass(target, 'cate')) {
+        dataid = father.getAttribute('data-cate-id');
+        grandFather.removeChild(father);
+        for (var k = 0; k < data.cates.length; k++) {
+            if (data.cates[k].category === dataid) {
+                data.cates.splice(k, 1);
+            }
+        }
+        for (var i = 0; i < data.lists.length; i++) {
+            if (data.lists[i][0] === dataid) {
+                data.lists.splice(i, 1);
+                i-=1;
+            }
+        }
+        for (var j = 0; j < data.tasks.length; j++) {
+            if (data.tasks[j].cateList[0] === dataid) {
+                data.tasks.splice(j, 1);
+                j-=1; // 不然只能删除一个任务
+            }
+        }
         updateData();
     }
 }
+function initMinus() {
+    updateData();
+    var datalists = document.querySelectorAll('[data-list-id]'), // 取拥有特定属性的元素集合
+        cates = document.querySelectorAll('li'),
+        datacates = [];
+        for (var i = 0; i < cates.length; i++) {
+            if (cates[i].hasAttribute('data-cate-id')) {
+                datacates.push(cates[i]);
+            }
+        }
+        // datacates = cate.getAttributeNodes('[data-cate-id]');
+    each(datalists, function (list) {
+        var minus = list.children[1];
+        list.onmouseenter = function () {
+            minus.style.opacity = 1;
+        }
+        list.onmouseleave = function () {
+            minus.style.opacity = 0;
+        }
+    })
+    each(datacates, function (cate) {
+        var minus = cate.children[1];
+        cate.onmouseenter = function () {
+            minus.style.opacity = 1;
+        }
+        cate.onmouseleave = function () {
+            minus.style.opacity = 0;
+        }
+    })
+}
+
+function initColor() {
+    each($('.data-task'), function (task) {
+        if (task.getAttribute('isDone') === 'true') {
+            task.style.color = 'rgba(0, 0, 0, 0.24)';
+        }
+    });
+}
+
