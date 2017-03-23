@@ -1,4 +1,4 @@
-﻿* {
+* {
     padding: 0;
     margin: 0;
 }
@@ -8,27 +8,28 @@ body {
 }
 
 h2:hover,h3:hover, h4:hover, h6:hover {
-    background-color: #C8C8C6;
-    -webkit-appearance: button;
-    box-shadow: 1px 1px 5px #9e9e9e;
-    border-radius: 5px;
+    background-color: rgb(76,100,187);
+    /* -webkit-appearance: button; */
+    /* box-shadow: 1px 1px 5px #9e9e9e; */
+    /* border-radius: 5px; */
     cursor: pointer;
 }
 
-.selectedTask,.selectedCate,.selectedStatus{
-    background-color: #ebebeb;
+.selectedCate{
+    background-color: rgb(69,91,169);
 }
 
 li {
     cursor: pointer;
     list-style-type: none;
+    /* border-bottom: 1px solid rgba(197, 197, 197, 0.1); */
 }
 
-.data-cate > li:hover {
-    background-color: #ebebeb;
+.data-cate>li:focus {
+    /* background-color: #ebebeb; */
 }
 .task-title:hover{
-    background-color: #ebebeb;
+    background-color: rgb(249,249,249);
 }
 #cateList ul {
     font-weight: normal;
@@ -56,8 +57,9 @@ ul#taskList {
 
 #cateList li {
     margin-left: 15px;
-    /*设置跟span.minus-circle相同*/
+    /*ÃƒÂ¨Ã‚Â®Ã‚Â¾ÃƒÂ§Ã‚Â½Ã‚Â®ÃƒÂ¨Ã‚Â·Ã…Â¸span.minus-circleÃƒÂ§Ã¢â‚¬ÂºÃ‚Â¸ÃƒÂ¥Ã‚ÂÃ…â€™*/
     line-height: 2;
+    opacity: .7;
 }
 
 header {
@@ -76,17 +78,19 @@ header {
     min-width: 808px;
     min-height: 500px;
     position: absolute;
-    top: 45px;
+    top: 0;
     bottom: 0;
     background-color: #e6ebf5;
     /* overflow: hidden; */
-    padding: 16px 16px 8px 16px;
+    /* padding: 16px 16px 8px 16px; */
     box-sizing: border-box;
-    /*padding: 10px; 右侧内容会溢出*/
+    /*padding: 10px; ÃƒÂ¥Ã‚ÂÃ‚Â³ÃƒÂ¤Ã‚Â¾Ã‚Â§ÃƒÂ¥Ã¢â‚¬Â Ã¢â‚¬Â¦ÃƒÂ¥Ã‚Â®Ã‚Â¹ÃƒÂ¤Ã‚Â¼Ã…Â¡ÃƒÂ¦Ã‚ÂºÃ‚Â¢ÃƒÂ¥Ã¢â‚¬Â¡Ã‚Âº*/
 }
 
 h2 {
-    margin: 6px;
+    width: 250px;
+    padding-left: 5px;
+    opacity: .8;
 }
 .leftCate, .midTask, .rightContent {
     /* float: left; */
@@ -99,10 +103,10 @@ h2 {
     width: 250px;
     height: 100%;
     position: relative;
-    background-color: #FFFFFF;
-    margin-right: 16px;
-    overflow-x: hidden;
-    overflow-y: scroll;
+    background-color: rgb(80, 105, 196);
+    color: #FFF;
+    /* background-image: linear-gradient(120deg, #155799, #159957); */
+    /* overflow-y: scroll; */
 }
 
 
@@ -120,44 +124,40 @@ h2 {
 }
 #addTask {
     left: 230px;
-    /* text-shadow: 0 0 black; */
+    /* text-shadow: 0 0 rgba(126, 57, 199, 0.48); */
 }
 
 div#addCate {
-    left: 210px;
+    left: 193px;
 }
 .midTask {
     position: relative;
     float: left;
-    width: 270px;
+    width: 285px;
     min-width: 270px;
     height: 100%;
     background-color: #FFFFFF;
-    margin-right: 16px;
+    margin-left: -16px;
 }
 
 
 .status {
     text-align: center;
-    /*margin: 10px 0 10px 0;*/
+    /* border-bottom: 1px solid; */
     height: 45px;
-    padding: 5px 0 5px 0;
+    padding: 0px 0 5px 0;
     line-height: 45px;
-    background-color: #ACACAC
-    /* border-bottom: 1px dashed #bbbbbb; */
+    /* background-color: #ACACAC; */
 }
 
-.status ul {
-
-    display: inline-block;
-    /* text-align: center; */
-}
+.status ul {border-bottom: 1px solid rgba(197, 197, 197, 0.38);display: inline-block;}
 
 .status li {
     cursor: pointer;
     float: left;
-    margin-right: 10px;
-    width: 80px;
+    /* color: #FFF; */
+    /* opacity: .8; */
+    width: 95px;
     /*height: 30px;*/
     text-align: center;
     /*line-height: 30px;*/
@@ -168,12 +168,12 @@ div#addCate {
 }
 
 .status li:hover {
-    box-shadow: 1px 1px #cccccc;
+    /* color: #e2e2e2; */
 }
 
 .status li:first-child {
-    margin-left: 10px;
-    width: 70px;
+    /* margin-left: 10px; */
+    /* width: 100px; */
 }
 
 .status li.choose {
@@ -181,24 +181,26 @@ div#addCate {
 }
 
 .rightWrap {
-    position: relative;
-    height: 100%;
-    margin-left: 552px;
+    /* float: left; */
+    /* height: 100%; */
+    /* clear: both; */
+    /* margin-left: 552px; */
     /*min-width: 200px;*/
 }
 
 .rightContent {
-    /*加浮动不能固定在右侧，宽度太窄掉下来*/
+    /*ÃƒÂ¥Ã…Â Ã‚Â ÃƒÂ¦Ã‚ÂµÃ‚Â®ÃƒÂ¥Ã…Â Ã‚Â¨ÃƒÂ¤Ã‚Â¸Ã‚ÂÃƒÂ¨Ã†â€™Ã‚Â½ÃƒÂ¥Ã¢â‚¬ÂºÃ‚ÂºÃƒÂ¥Ã‚Â®Ã…Â¡ÃƒÂ¥Ã…â€œÃ‚Â¨ÃƒÂ¥Ã‚ÂÃ‚Â³ÃƒÂ¤Ã‚Â¾Ã‚Â§ÃƒÂ¯Ã‚Â¼Ã…â€™ÃƒÂ¥Ã‚Â®Ã‚Â½ÃƒÂ¥Ã‚ÂºÃ‚Â¦ÃƒÂ¥Ã‚Â¤Ã‚ÂªÃƒÂ§Ã‚ÂªÃ¢â‚¬Å¾ÃƒÂ¦Ã…Â½Ã¢â‚¬Â°ÃƒÂ¤Ã‚Â¸Ã¢â‚¬Â¹ÃƒÂ¦Ã‚ÂÃ‚Â¥*/
     /* float: left; */
-    position: absolute;
-    /* overflow: scroll; */
-    /* margin-left: 552px; */
+    /* position: absolute; */
+    /* background-color: rgb(80, 105, 196); */
+    margin-left: 520px;
+    /* z-index: 2; */
     height: 100%;
     left: 0;
     right: 0;
     /* overflow: hidden; */
-    background-color: #FFFFFF;
-    /*这里要加margin*/
+    background-color: rgba(250, 250, 250, 1);
+    /*ÃƒÂ¨Ã‚Â¿Ã¢â€žÂ¢ÃƒÂ©Ã¢â‚¬Â¡Ã…â€™ÃƒÂ¨Ã‚Â¦Ã‚ÂÃƒÂ¥Ã…Â Ã‚Â margin*/
     /* margin-right: 16px; */
 }
 
@@ -215,8 +217,8 @@ div#addCate {
     /* height: 40px; */
     padding-left: 10px;
     line-height: 40px;
-    background-color: #f9f9f9;
-    border-bottom: 1px solid #bbbbbb;
+    background-color: rgb(253, 253, 253);
+    border-bottom: 1px solid rgb(238, 238, 238);
 }
 
 span#hidTitle {
@@ -231,26 +233,27 @@ span#hidTitle {
     display: block;
     /* overflow: hidden; */
     line-height: 40px;
-    background-color: #f9f9f9;
-    border-bottom: 1px solid #bbbbbb;
+    background-color: rgb(253, 253, 253);
+    border-bottom: 1px solid rgb(238, 238, 238);
 }
 
 .rightHideWrap {
     display: none;
-    position: relative;
-    height: 100%;
-    top: -633px;
-    margin-left: 552px;
+    /* position: relative; */
+    /* height: 100%; */
+    /* top: -633px; */
+    /* margin-left: 552px; */
     /*min-width: 200px;*/
 }
 
 .rightHide {
     /*display: none;*/
-    /* margin-left: 520px; */
+    margin-left: 520px;
     height: 100%;
     position: absolute;
     /* bottom: 0; */
-    /* top: 45px; */
+    /* float: right; */
+    top: 0;
     right: 0;
     left: 0;
     /*margin: 16px 16px 0px 16px;*/
@@ -258,9 +261,10 @@ span#hidTitle {
 }
 
 textarea#inputContent {
+    display: block;
     width: 100%;
     text-indent: 2em;
-    /* height: 100%; */
+    height: 100%;
     border: none;
     resize: none;
     /* bottom: 0; */
@@ -277,12 +281,13 @@ textarea {
 
 
 .task_content {
+    background-color: rgb(250, 250, 250);
     /* width: 500px; */
     /* min-height: 200px; */
     /* max-height: 90%; */
-    /* height: 200px; */
+    /* margin-left: -100px; */
     position: absolute;
-     text-indent: 2em;
+    text-indent: 2em;
     /* padding: 10px 10px 0 10px; */
     /* float: right; */
     right: 0;
@@ -290,7 +295,7 @@ textarea {
     left: 0;
     bottom: 0px;
     /* height: 200px; */
-    /* margin-right: 33px; */
+    margin-left: 520px;
     /*padding: 3px;*/
     /* outline: 0; */
     /*border: 1px solid #e4e4e4;*/
@@ -298,13 +303,16 @@ textarea {
     word-wrap: break-word;
     /* overflow-x: hidden; */
     overflow-y: auto;
-     -webkit-user-modify: read-only;
+    -webkit-user-modify: read-only;
 }
 .content {
     width: 100%;
+    bottom: 26px;
+    /* margin-bottom: 10px; */
+    top: 82px;
     /* height: 550px; */
     /* height: 100%; */
-    /* position: absolute; */
+    position: absolute;
     /* bottom: 0; */
     /* overflow: hidden; */
     /* color: black; */
@@ -327,7 +335,7 @@ div#cover {
     /* display: none; */
     width: 300px;
     height: 180px;
-    background-color: #eee;
+    background-color: rgb(253, 253, 253);
     /* margin: 0 auto; */
     margin-left: -150px;
     margin-top: -90px;
@@ -343,8 +351,8 @@ div#cover {
 .cover_title {
     text-align: center;
     /* border-bottom: 1px dashed; */
-    background-color: #79bcd6;
-    border-radius: 10px;
+    background-color: #4497ff;
+    /* border-radius: 10px; */
 }
 
 .cover_mainClass {
@@ -378,6 +386,81 @@ input#newCateName {width: 150px;height: 25px;margin-top: 10px;}
 button {
     width: 60px;
     height: 25px;
-    background-color: #ffffff;
+    background-color: rgb(68, 151, 255);
     /* margin: 0 auto; */
+}
+div#saveOrReturn {
+    /* margin: 0; */
+    /* padding: 0; */
+    /* font-size: 0; */
+    /* line-height: 0; */
+    float: left;
+}
+
+.leftCateWrap {
+    /* height: 100%; */
+    /* width: 250px; */
+    /* float: left; */
+    /* overflow: scroll; */
+}
+
+div#addCate {}
+
+.addCateWrap {
+    /* position: absolute; */
+    /* float: left; */
+    /* width: 232px; */
+    /* height: 100%; */
+    /* z-index: 999; */
+    /* margin-top: -700px; */
+}
+
+ul#cateList {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 72px;
+    overflow-y: scroll;
+}
+
+ul#tasksList {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 55px;
+    bottom: 0px;
+    overflow-y: scroll;
+    padding: 0 20px 0 20px;
+}
+
+.data-cate>li:hover {
+    background-color: rgb(76,100,187);
+}
+
+.data-cate>li:active {
+    background-color: rgba(0,0,0,.14);
+}
+
+li.selectedCate {
+    background-color: rgb(69,91,169);
+    opacity: .8;
+}
+
+li.selectedCate {}
+
+.status li:hover {
+    background-color: rgba(135, 165, 245, 0.71);
+}
+li.task-title {
+    border-bottom: 1px solid rgba(197, 197, 197, 0.38);
+}
+
+.selectedStatus {
+    background-color: rgba(111, 143, 208, 0.9);
+    /* background-image: linear-gradient(120deg, #155799, #159957); */
+}
+
+li.task-title.selectedTask {
+    background-color: #f3f3f3;
 }

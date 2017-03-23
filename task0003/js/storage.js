@@ -82,16 +82,16 @@ var defaultCate = Category.prototype,
         item.id = i;
     });
 
-console.log(list1); // list1 ['IFE', 'task1']
-console.log(detail1.cateList)
+// console.log(list1); // list1 ['IFE', 'task1']
+// console.log(detail1.cateList)
 // localstorage本地储存数据对象
 var data = {
     cates: getData('cates'),
     lists: getData('lists'),
     tasks: getData('tasks')
 };
-console.log(getData('cates'));
-console.log(getData('lists'));
+// console.log(getData('cates'));
+// console.log(getData('lists'));
 function getData(keyName) {
     if (window.localStorage) {
         var storage = window.localStorage;
@@ -110,13 +110,13 @@ function getData(keyName) {
                     storage.setItem('tasks', JSON.stringify(tasks));
                     return JSON.parse(storage.getItem('tasks'));
             }
-            console.log('get');
+            // console.log('get');
         }
-        console.log('get');
+        // console.log('get');
         return JSON.parse(storage.getItem(keyName));
     }
 }
-console.log(data.cates);
+// console.log(data.cates);
 function setData(keyName, value) {
     if (window.localStorage) {
         var storage = window.localStorage;

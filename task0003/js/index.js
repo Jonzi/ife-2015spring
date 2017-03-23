@@ -25,12 +25,15 @@
     // 初始化删除按钮
     initMinus();
 
+    // 任务重排序
+    // sortDate();
+
 })();
 
 // 查看所有任务
 $.click($('#allTasks'), showAll)
 function showAll() {
-    updateData();
+    // sortDate();
     if ($('.selectedCate')[0]) {
         removeClass($('.selectedCate')[0], 'selectedCate');
     }
@@ -38,8 +41,9 @@ function showAll() {
     // removeClass($('.selectedCate')[0], 'selectedCate');
     $('#tasksList').innerHTML = '';
     each(data.tasks, function (task) {
-        $('#tasksList').innerHTML += '<li><ul class = data-task isDone ='+ task.isDone + '><li>' +task.time+ '</li><li class = task-title>'  +task.title+'</li></ul></li>'
+        $('#tasksList').innerHTML += '<li><ul class = data-task isDone ='+ task.isDone + '><li class="task-time">' +task.time+ '</li><li class = task-title>'  +task.title+'</li></ul></li>'
     })
+
     initColor();
 }
 
@@ -158,7 +162,8 @@ function changeClassName(event) {
                     var liList = ulList[i].getElementsByTagName('li');
                     each(liList, function (item) {
                         listItem.push(item);
-                        console.log(listItem);
+                        // console.log(listItem);
+
                     })
                 }
                 // console.log(listItem);
@@ -170,7 +175,7 @@ function changeClassName(event) {
                 }
                 listItem = []; // 不然每次点击都会叠加listItem
                 addClass(target, cateClassName);
-                console.log(target);
+                // console.log(target);
                 // var taskAll = tasksList[0].querySelectorAll('.task-title');
 
                 // for (var i = 0; i < taskAll.length; i++) {
@@ -215,7 +220,7 @@ function changeClassName(event) {
 
                         each(data.tasks, function (task) {
                             if (task.cateList[1] === listId) {
-                                $('#tasksList').innerHTML += '<li><ul class = data-task isDone ='+ task.isDone + '><li>' +task.time+ '</li><li class = task-title isDone ='+ task.isDone + '>'+task.title+'</li></ul></li>';
+                                $('#tasksList').innerHTML += '<li><ul class = data-task isDone ='+ task.isDone + '><li class-"task-time">' +task.time+ '</li><li class = task-title isDone ='+ task.isDone + '>'+task.title+'</li></ul></li>';
                             }
                         });
                         initColor();
@@ -224,16 +229,16 @@ function changeClassName(event) {
                     } if (id === 'finished') {
                         each(data.tasks, function (task) {
                             if (task.cateList[1] === listId && task.isDone) {
-                                $('#tasksList').innerHTML += '<li><ul class = data-task isDone ='+ task.isDone + '><li>' +task.time+ '</li><li class = task-title isDone ='+ task.isDone + '>'+task.title+'</li></ul></li>';
+                                $('#tasksList').innerHTML += '<li><ul class = data-task isDone ='+ task.isDone + '><li class="task-time">' +task.time+ '</li><li class = task-title isDone ='+ task.isDone + '>'+task.title+'</li></ul></li>';
                             }
                         });
                         initColor();
                         // $('#tasksList').style.color = 'rgba(0, 0, 0, 0.24)';
                     } if (id === 'unfinished') {
                         each(data.tasks, function (task) {
-                            console.log(listId);
+                            // console.log(listId);
                             if (task.cateList[1] === listId && !task.isDone) {
-                                $('#tasksList').innerHTML += '<li><ul class = data-task isDone ='+ task.isDone + '><li>' +task.time+ '</li><li class = task-title isDone ='+ task.isDone + '>'+task.title+'</li></ul></li>';
+                                $('#tasksList').innerHTML += '<li><ul class = data-task isDone ='+ task.isDone + '><li class="task-time">' +task.time+ '</li><li class = task-title isDone ='+ task.isDone + '>'+task.title+'</li></ul></li>';
                             }
                         });
                         // $('#tasksList').style.color = 'rgba(0, 0, 0,1)';
@@ -245,7 +250,7 @@ function changeClassName(event) {
                     if (id === 'all') {
                         each(data.tasks, function (task) {
 
-                                $('#tasksList').innerHTML += '<li><ul class = data-task isDone ='+ task.isDone + '><li>' +task.time+ '</li><li class = task-title isDone ='+ task.isDone + '>'+task.title+'</li></ul></li>';
+                                $('#tasksList').innerHTML += '<li><ul class = data-task isDone ='+ task.isDone + '><li class="task-time">' +task.time+ '</li><li class = task-title isDone ='+ task.isDone + '>'+task.title+'</li></ul></li>';
 
                         });
                         initColor();
@@ -253,7 +258,7 @@ function changeClassName(event) {
                     } if (id === 'finished') {
                         each(data.tasks, function (task) {
                             if (task.isDone) {
-                                $('#tasksList').innerHTML += '<li><ul class = data-task isDone ='+ task.isDone + '><li>' +task.time+ '</li><li class = task-title isDone ='+ task.isDone + '>'+task.title+'</li></ul></li>';
+                                $('#tasksList').innerHTML += '<li><ul class = data-task isDone ='+ task.isDone + '><li class="task-time">' +task.time+ '</li><li class = task-title isDone ='+ task.isDone + '>'+task.title+'</li></ul></li>';
                             }
                         });
                         initColor();
@@ -261,9 +266,9 @@ function changeClassName(event) {
                     } if (id === 'unfinished') {
 
                         each(data.tasks, function (task) {
-                            console.log(listId);
+                            // console.log(listId);
                             if (!task.isDone) {
-                                $('#tasksList').innerHTML += '<li><ul class = data-task isDone ='+ task.isDone + '><li>' +task.time+ '</li><li class = task-title isDone ='+ task.isDone + '>'+task.title+'</li></ul></li>';
+                                $('#tasksList').innerHTML += '<li><ul class = data-task isDone ='+ task.isDone + '><li class="task-time">' +task.time+ '</li><li class = task-title isDone ='+ task.isDone + '>'+task.title+'</li></ul></li>';
                             }
                         });
                         // $('#tasksList').style.color = 'rgba(0, 0, 0,1)';
@@ -280,11 +285,11 @@ function changeClassName(event) {
 
                     if (taskAll[i] === target) {
                         each(taskAll, function (item) {
-                            console.log('a')
+                            // console.log('a')
                             if (hasClass(item, taskClassName)) {
                                 removeClass(item, taskClassName);
                             }
-                            console.log('b')
+                            // console.log('b')
                         })
                         addClass(target, taskClassName);
                     }
@@ -310,20 +315,20 @@ function changeMedium(event) {
         $('#tasksList').innerHTML = '';
         each(data.tasks, function (task) {
             if (task.cateList[1] === listId && text === '所有') {
-                $('#tasksList').innerHTML += '<li><ul class = data-task isDone ='+ task.isDone + '><li>' +task.time+ '</li><li class = task-title isDone ='+ task.isDone + '>'+task.title+'</li></ul></li>';
+                $('#tasksList').innerHTML += '<li><ul class = data-task isDone ='+ task.isDone + '><li class="task-time">' +task.time+ '</li><li class = task-title isDone ='+ task.isDone + '>'+task.title+'</li></ul></li>';
                 initColor();
             } if (task.cateList[1] === listId && text === '已完成' && task.isDone) {
 
-                console.log(listId);
+                // console.log(listId);
                 if (task.cateList[1] === listId ) {
-                    $('#tasksList').innerHTML += '<li><ul class = data-task isDone ='+ task.isDone + '><li>' +task.time+ '</li><li class = task-title isDone ='+ task.isDone + '>'+task.title+'</li></ul></li>';
+                    $('#tasksList').innerHTML += '<li><ul class = data-task isDone ='+ task.isDone + '><li class="task-time">' +task.time+ '</li><li class = task-title isDone ='+ task.isDone + '>'+task.title+'</li></ul></li>';
                 }
                 initColor();
             } if (task.cateList[1] === listId && text === '未完成' && !task.isDone) {
 
-                        console.log(listId);
+                        // console.log(listId);
                         if (task.cateList[1] === listId ) {
-                            $('#tasksList').innerHTML += '<li><ul class = data-task isDone ='+ task.isDone + '><li>' +task.time+ '</li><li class = task-title isDone ='+ task.isDone + '>'+task.title+'</li></ul></li>';
+                            $('#tasksList').innerHTML += '<li><ul class = data-task isDone ='+ task.isDone + '><li class="task-time">' +task.time+ '</li><li class = task-title isDone ='+ task.isDone + '>'+task.title+'</li></ul></li>';
                         }
 
             }
@@ -365,7 +370,7 @@ function addList(obj) {
     if (liList.getElementsByTagName('ul')[0]) {
 
     // ulList.style.padding-left = '30px'; wrong
-        console.log(obj[1]);
+        // console.log(obj[1]);
         // console.log(toCount(obj[1]))
         liList.getElementsByTagName('ul')[0].innerHTML +=  '<li data-list-id=' + obj[1] + '><span class="fa fa-file-o fa-fw"></span>'
     + obj[1] + '(' + toCount('data.lists', obj[1]) + ')'+ '<span class="fa fa-minus-circle list"></span></li>';
@@ -422,7 +427,7 @@ function toCount(arr, type) {
 }
 
 function addMedium(obj) {
-    $('#tasksList').innerHTML = '<li><ul class = data-task isDone ='+ obj.isDone + '><li>' +obj.time+ '</li><li class = task-title>'  +obj.title+'</li></ul></li>'
+    $('#tasksList').innerHTML = '<li><ul class = data-task isDone ='+ obj.isDone + '><li class="task-time">' +obj.time+ '</li><li class = task-title>'  +obj.title+'</li></ul></li>'
 }
 
 function addRightContent(obj) {
@@ -489,7 +494,7 @@ selectCate.onchange = function () {
     });
 }
 $.click(cancel, function () {
-    console.log('cancel add cate');
+    // console.log('cancel add cate');
     coverStyle.display = 'none';
 });
 $.click(confirm, addACate);
@@ -572,7 +577,7 @@ function doneTask() {
                 task.isDone = true;
             }
         $('.selectedTask')[0].style.color = 'rgba(0, 0, 0, 0.24)'
-        console.log('check task')
+        // console.log('check task')
         })
         updateData();
 }
@@ -607,10 +612,11 @@ function saveEdit() {
 
     // TODO(繁琐)
     // 刷新数据
+    if ($('.selectedTask')[0]) {
     each(data.tasks, function (task) {
         // 为了避免与新增任务的保存按钮冲突，$('.selectedTask')[0]起了作用
         var title;
-        if ($('.selectedTask')[0]) {
+
             title = $('.selectedTask')[0].innerHTML;    // 选中任务的标题
 
             if (task.title === title) {
@@ -621,20 +627,36 @@ function saveEdit() {
                 $('.selectedTask')[0].previousSibling.innerHTML = $('#hidDate').innerHTML; // 选中任务时间
 
             }
-        }
+
         updateData();
-    })
+    })}
     if (!$('.selectedTask')[0]) {
         // $('#tasksList').innerHTML += '<li><ul class="data-task" isDone="false"><li>' + $('#inputDate').value + '</li><li class="task-title">' + $('#inputTitle').value + '</li></li>';
-        node = document.createElement('li');
-        node.innerHTML ='<ul class="data-task" isDone="false"><li>' + $('#inputDate').value + '</li><li class="task-title">' + $('#inputTitle').value + '</li>';
-        $('#tasksList').appendChild(node);
+
+        // node = document.createElement('li');
+        // node.innerHTML ='<ul class="data-task" isDone="false"><li class="task-time">' + $('#inputDate').value + '</li><li class="task-title">' + $('#inputTitle').value + '</li>';
+        // $('#tasksList').appendChild(node);
+
         var pra1 = $('.selectedCate')[0].parentNode.getAttribute('data-cate-id');   // 主分类
         var pra2 = $('.selectedCate')[0].getAttribute('data-list-id') // 子分类
         var newTaskList = new TaskList(pra1, pra2);
         var newTask = new TaskDetail(newTaskList, $('#inputTitle').value, $('#inputDate').value, $('#inputContent').value, false);
         data.tasks.push(newTask);
         updateData();
+        // sortDate();
+        var listName = $('.selectedCate')[0].getAttribute('data-list-id');
+        var tasks = [];
+        each(data.tasks, function (task) {
+            if (task.cateList[1] === listName) {
+                tasks.push(task);
+            }
+        })
+
+        $('#tasksList').innerHTML = '';
+        each(tasks, function (task) {
+            $('#tasksList').innerHTML += '<li><ul class = data-task isDone ='+ task.isDone + '><li class="task-time">' +task.time+ '</li><li class = task-title>'  +task.title+'</li></ul></li>'
+        })
+
 
     }
 
@@ -650,7 +672,10 @@ function addATask() {
     $('.rightHideWrap')[0].style.display = 'block';
     // 初始化编辑界面
     // $('.selectedCate')[0]
-    removeClass($('.selectedTask')[0], 'selectedTask');
+    if ($('.selectedTask')[0]) {
+        removeClass($('.selectedTask')[0], 'selectedTask');
+    }
+
     initMinus();
 }
 
@@ -749,4 +774,40 @@ function initColor() {
         }
     });
 }
+
+// 日期排序
+function sortDate() {
+    var arr = [];
+    each(data.tasks, function (task) {
+        var text = task.time;
+        arr.push(text);
+    })
+    arr.sort(function (a, b) {
+        return new Date(a).getTime() - new Date(b).getTime();
+    })
+
+
+    // each(data.tasks, function (task) {
+    //     if (task.time === text) {
+    //         data.tasks.push(task);
+    //     }
+    // })
+
+    for (var i = 0; i < arr.length; i++) {
+        var taskss = [];
+        for (var j = 0; j < data.tasks.length; j++) {
+            if (data.tasks[j].time === arr[i]) {
+                taskss.push(data.tasks[j]);
+            }
+        }
+    }
+    console.log(arr);
+    console.log(taskss);
+}
+sortDate();
+console.log(data.tasks);
+
+
+
+
 
