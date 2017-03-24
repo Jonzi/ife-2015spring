@@ -7,9 +7,6 @@
     <link rel="stylesheet" type="text/css" href="css/index.css">
 </head>
 <body>
-    <header>
-        <h1>TodoList</h1>
-    </header>
     <div class="container">
         <div class="leftCate">
             <h2 id ="allTasks">
@@ -92,10 +89,13 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div id="cover">
-        <div class="cover_wrap">
-            <div class="cover_title"><p>新增分类</p></div>
+        <div id="cover">
+        <!-- <div class="cover_wrap"> -->
+            <!-- <div class="cover_title"><p>新增分类</p></div> -->
+            <div class="cover_title">
+                <p style="display:inline">新增分类</p>
+                <div id="cancel" class="fa fa-times"></div>
+            </div>
             <div class="cover_content">
                 选择主分类：
                 <select class="cover_mainCate" id="selectCate">
@@ -106,10 +106,11 @@
             </div>
             <div class="cover_footer">
                 <button id="confirm">确认</button>
-                <button id="cancel">取消</button>
             </div>
         </div>
+        </div>
     </div>
+
     <script type="text/javascript" src="js/todo.util.js"></script>
     <script type="text/javascript" src="js/storage.js"></script>
     <script type="text/javascript" src="js/index.js"></script>

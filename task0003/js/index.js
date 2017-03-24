@@ -1,7 +1,6 @@
 // 初始化
 (function () {
     // 初始化左侧分类及子分类
-
     countAllTask();
     each(data.cates, addCate);
     each(data.lists, addList);
@@ -27,13 +26,13 @@
 
     // 任务重排序
     // sortDate();
+    // sortTask();
 
 })();
 
 // 查看所有任务
 $.click($('#allTasks'), showAll)
 function showAll() {
-    // sortDate();
     if ($('.selectedCate')[0]) {
         removeClass($('.selectedCate')[0], 'selectedCate');
     }
@@ -43,9 +42,59 @@ function showAll() {
     each(data.tasks, function (task) {
         $('#tasksList').innerHTML += '<li><ul class = data-task isDone ='+ task.isDone + '><li class="task-time">' +task.time+ '</li><li class = task-title>'  +task.title+'</li></ul></li>'
     })
-
+    // data.tasks = aa;
     initColor();
 }
+var arr;
+function sortDate() {
+    updateData();
+    arr = [];
+    // updateData();
+    each(data.tasks, function (task) {
+        var text = task.time;
+        arr.push(text);
+    })
+    arr.sort(function (a, b) {
+        return new Date(a).getTime() - new Date(b).getTime();
+    })
+    // return arr;
+    console.log(arr);
+    return  (function () {
+        aa = [];
+        for (var i = 0; i < arr.length; i++) {
+            for (var j = 0; j < data.tasks.length; j++) {
+                if (data.tasks[j].time === arr[i]) {
+                    aa = aa.concat(data.tasks[j]);
+                }
+            }
+        console.log(aa);
+
+        }
+        console.log(arr);
+        console.log(aa);
+        data.tasks = aa;
+        // return data.tasks;
+
+        // console.log(taskss);
+    })()
+}
+
+// 日期排序
+function sortTask() {
+    for (var i = 0; i < data.tasks.length; i++) {
+        if (newTask.time > data.task[i] && newTask.time < data.tasks[i+1]) {
+            data.tasks.splice(i+1, 0 , newTask)
+        }
+    }
+}
+// console.log(aa);
+console.log(data.tasks);
+
+
+
+
+
+
 
 function initSelectCate() {
     updateData();
@@ -143,6 +192,7 @@ var tasksList = $('.data-lists');
 // TODO
 // 有冗余的代码
 function changeClassName(event) {
+    stopBubble();
     updateData();
     event = event || window.event;
     var target = event.target || event.srcElement;
@@ -642,6 +692,13 @@ function saveEdit() {
         var newTaskList = new TaskList(pra1, pra2);
         var newTask = new TaskDetail(newTaskList, $('#inputTitle').value, $('#inputDate').value, $('#inputContent').value, false);
         data.tasks.push(newTask);
+
+        // for (var i = 0; i < data.tasks.length; i++) {
+        //     if (newTask.time < data.tasks[i].time) {
+        //         data.tasks.splice(i, 0, newTask)
+        //     }
+        // }
+
         updateData();
         // sortDate();
         var listName = $('.selectedCate')[0].getAttribute('data-list-id');
@@ -774,38 +831,6 @@ function initColor() {
         }
     });
 }
-
-// 日期排序
-function sortDate() {
-    var arr = [];
-    each(data.tasks, function (task) {
-        var text = task.time;
-        arr.push(text);
-    })
-    arr.sort(function (a, b) {
-        return new Date(a).getTime() - new Date(b).getTime();
-    })
-
-
-    // each(data.tasks, function (task) {
-    //     if (task.time === text) {
-    //         data.tasks.push(task);
-    //     }
-    // })
-
-    for (var i = 0; i < arr.length; i++) {
-        var taskss = [];
-        for (var j = 0; j < data.tasks.length; j++) {
-            if (data.tasks[j].time === arr[i]) {
-                taskss.push(data.tasks[j]);
-            }
-        }
-    }
-    console.log(arr);
-    console.log(taskss);
-}
-sortDate();
-console.log(data.tasks);
 
 
 

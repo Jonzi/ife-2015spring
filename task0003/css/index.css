@@ -5,6 +5,8 @@
 
 body {
     min-width: 808px;
+    width: 100%;
+    height: 100%;
 }
 
 h2:hover,h3:hover, h4:hover, h6:hover {
@@ -248,7 +250,7 @@ span#hidTitle {
 }
 
 .rightHide {
-    /*display: none;*/
+    /* display: none; */
     margin-left: 520px;
     height: 100%;
     position: absolute;
@@ -268,6 +270,7 @@ textarea#inputContent {
     height: 100%;
     border: none;
     resize: none;
+    outline: none;
     /* bottom: 0; */
 }
 
@@ -320,39 +323,49 @@ textarea {
 }
 
 div#cover {
-     display: none;
-     position: absolute;
-     /* width: 100%; */
+     /* display: none; */
+     /* position: absolute; */
+     /* width: 360px; */
+     /* height: 360px; */
+     /* z-index: 99; */
      /* height: 100%; */
-     left: 0;
-     top: 0;
-     right: 0;
-     bottom: 0;
+     /* margin: 0 auto; */
+     /* margin-top: -50%; */
+     /* right: 25%; */
+     /* left: 25%; */
+     /* bottom: 0; */
      /* float: left; */
      /* overflow: hidden; */
 }
 
-.cover_wrap {
-    /* display: none; */
-    width: 300px;
+#cover {
+     display: none;
+    z-index: 4;
+    width: 360px;
     height: 180px;
+    margin-top: -90px;
     background-color: rgb(253, 253, 253);
     /* margin: 0 auto; */
-    margin-left: -150px;
-    margin-top: -90px;
+    /* margin-left: 25%; */
+    /* margin-top: -90px; */
     /* margin-bottom: -125px; */
     /* line-height: 250px; */
     position: absolute;
     left: 50%;
+    margin-left: -180px;
     top: 50%;
+    box-shadow: blue;
     /* border-radius: 10px; */
     /* clear: both; */
 }
 
 .cover_title {
-    text-align: center;
+    position: relative;
+    height: 30px;
+    padding-left: 10px;
+    line-height: 30px;
     /* border-bottom: 1px dashed; */
-    background-color: #4497ff;
+    background-color: rgb(0, 153, 188);
     /* border-radius: 10px; */
 }
 
@@ -379,16 +392,23 @@ input#newCateName {width: 150px;height: 25px;margin-top: 10px;}
     position: absolute;
     width: 100%;
     margin: 0 auto;
-    text-align: center;
-    bottom: 15px;
-    /* margin-bottom: 20px; */
+    /* text-align: right; */
+    /* line-height: 67px; */
+    height: 67px;
+    /* z-index: 6; */
+    background-color: rgba(243, 243, 243, 1);
 }
 
 button {
     width: 60px;
     height: 25px;
-    background-color: rgb(68, 151, 255);
-    /* margin: 0 auto; */
+    background-color: rgb(250, 250, 250);
+}
+button#confirm {
+    right: 10px;
+    position: absolute;
+    top: 50%;
+    margin-top: -12.5px;
 }
 div#saveOrReturn {
     /* margin: 0; */
@@ -464,4 +484,12 @@ li.task-title {
 
 li.task-title.selectedTask {
     background-color: #f3f3f3;
+}
+
+div#cancel {
+    /* float: right; */
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    margin-top: -6.289px;
 }
