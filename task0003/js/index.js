@@ -138,8 +138,8 @@ function addCate(obj) {
     if (!liCate) {
         liCate = document.createElement('li');
         liCate.setAttribute('data-cate-id', obj.category);
-        liCate.innerHTML =  '<span class="fa fa-folder-open fa-fw"></span>'
-         + obj.category + '(' + toCount('data.cates', obj.category) + ')' + '<span class="fa fa-minus-circle cate"></span>';
+        liCate.innerHTML =  '<h3><span class="fa fa-folder-open fa-fw"></span>'
+        + obj.category + '(' + toCount('data.cates', obj.category) + ')' + '<span class="fa fa-minus-circle cate"></span>';
         $('#cateList').appendChild(liCate);
 
     }
@@ -795,14 +795,16 @@ function deleteCate(event) {
 }
 function initMinus() {
     updateData();
+    // stopBubble();
     var datalists = document.querySelectorAll('[data-list-id]'), // 取拥有特定属性的元素集合
         cates = document.querySelectorAll('li'),
-        datacates = [];
-        for (var i = 0; i < cates.length; i++) {
-            if (cates[i].hasAttribute('data-cate-id')) {
-                datacates.push(cates[i]);
-            }
-        }
+        // datacates = [];
+        // for (var i = 0; i < cates.length; i++) {
+        //     if (cates[i].hasAttribute('data-cate-id')) {
+        //         datacates.push(cates[i]);
+        //     }
+        // }
+        datacates = $('h3');
         // datacates = cate.getAttributeNodes('[data-cate-id]');
     each(datalists, function (list) {
         var minus = list.children[1];
@@ -825,6 +827,7 @@ function initMinus() {
 }
 
 function initColor() {
+
     each($('.data-task'), function (task) {
         if (task.getAttribute('isDone') === 'true') {
             task.style.color = 'rgba(0, 0, 0, 0.24)';
