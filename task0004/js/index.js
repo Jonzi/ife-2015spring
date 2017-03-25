@@ -1,5 +1,8 @@
 // 初始化
 (function () {
+    // 初始化左上角返回按钮
+    // addClass($('#back'), 'visit');
+
     // 初始化左侧分类及子分类
     countAllTask();
     each(data.cates, addCate);
@@ -33,6 +36,10 @@
 // 查看所有任务
 $.click($('#allTasks'), showAll)
 function showAll() {
+    // addClass($('#back')[0], 'active');
+    // addClass($('.leftCate')[0], 'visit');
+    // addClass($('.midTask')[0], 'active');
+    // addClass($('.rightContent')[0], 'active');
     if ($('.selectedCate')[0]) {
         removeClass($('.selectedCate')[0], 'selectedCate');
     }
@@ -358,6 +365,10 @@ delegateClickEvent(tasksList, changeClassName);
 // 通过getAttribute取子分类名字（不含未完成任务数）
 // TODO
 function changeMedium(event) {
+        // addClass($('#back'), 'active');
+        // addClass($('.leftCate')[0], 'visit');
+        addClass($('.midTask')[0], 'active');
+        addClass($('.rightContent')[0], 'active');
         event = event || window.event;
         var target = event.target || event.srcElement;
         var listId = target.getAttribute('data-list-id');
@@ -390,6 +401,9 @@ delegateClickEvent(ulList, changeMedium);
 
 // 右侧显示任务详情
 function changeRight() {
+    // addClass($('#back'), 'active');
+    addClass($('.midTask')[0], 'visited');
+    // addClass($('.rightContent')[0], 'visited');
     var task = $('.selectedTask')[0];
     var text = task.innerText;
     each(data.tasks, function (task) {
@@ -722,6 +736,8 @@ function saveEdit() {
 // 添加任务
 $.click($('#addTask'), addATask);
 function addATask() {
+    addClass($('.midTask')[0], 'visit');
+    addClass($('.rightHideWrap')[0], 'active');
     $('#inputTitle').value = '';
     $('#inputContent').value = '';
     $('#inputDate').value = '';
@@ -825,6 +841,7 @@ function initMinus() {
         }
     })
 }
+function initMinus(){};
 
 function initColor() {
 
@@ -837,5 +854,14 @@ function initColor() {
 
 
 
+
+
+$.click($('#back'), function () {
+        var visited = $('.visited');
+        each(visited, function (visited) {
+            removeClass(visited, 'visited');
+        })
+
+});
 
 
