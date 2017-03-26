@@ -860,7 +860,8 @@ function initMinus() {
         // }
         datacates = $('h3');
         // datacates = cate.getAttributeNodes('[data-cate-id]');
-    each(datalists, function (list) {
+    if (window.innerWidth > parseInt('480px')) {
+        each(datalists, function (list) {
         var minus = list.children[1];
         list.onmouseenter = function () {
             minus.style.opacity = 1;
@@ -868,16 +869,17 @@ function initMinus() {
         list.onmouseleave = function () {
             minus.style.opacity = 0;
         }
-    })
-    each(datacates, function (cate) {
-        var minus = cate.children[1];
-        cate.onmouseenter = function () {
-            minus.style.opacity = 1;
-        }
-        cate.onmouseleave = function () {
-            minus.style.opacity = 0;
-        }
-    })
+        })
+        each(datacates, function (cate) {
+            var minus = cate.children[1];
+            cate.onmouseenter = function () {
+                minus.style.opacity = 1;
+            }
+            cate.onmouseleave = function () {
+                minus.style.opacity = 0;
+            }
+        })
+    }
 }
 
 function initColor() {
