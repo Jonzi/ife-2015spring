@@ -38,7 +38,8 @@ function initBack() {
 }
 
 function ingBack() {
-    if (window.innerWidth < '480px') {
+    if (window.innerWidth < parseInt('480px')) {
+        console.log(window.innerWidth);
         $('#back').style.visibility = 'visible';
     }
 }
