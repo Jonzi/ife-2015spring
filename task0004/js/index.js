@@ -38,7 +38,7 @@ function initBack() {
 }
 
 function ingBack() {
-    if (window.innerWidth < parseInt('480px')) {
+    if (window.innerWidth < parseInt('770px')) {
         console.log(window.innerWidth);
         $('#back').style.visibility = 'visible';
     }
@@ -379,6 +379,7 @@ delegateClickEvent(tasksList, changeClassName);
 // 通过getAttribute取子分类名字（不含未完成任务数）
 // TODO
 function changeMedium(event) {
+        updateData();
         ingBack();
         stopBubble();
         // addClass($('.leftCate')[0], 'visit');
@@ -592,15 +593,13 @@ $.click(close, function () {
 });
 $.click(sure, addACate);
 function addACate() {
-    alert('sure')
-
     node = document.createElement('li');
     // 新增主分类
     if ($('#selectCate')[0].selected) {
         var outCateName = $('#newCateName').value;
         node.setAttribute('data-cate-id', outCateName);
-        node.innerHTML = '<span class="fa fa-folder-open fa-fw"></span>'
-         + outCateName + '(' + toCount('data.cates', outCateName) + ')' + '<span class="fa fa-minus-circle cate"></span><ul data-cate-id=' + outCateName + '' + ' class="data-cate" style="padding: 0px 0px 0px 20px;"></ul>';
+        node.innerHTML = '<h3><span class="fa fa-folder-open fa-fw"></span>'
+        + outCateName + '(' + toCount('data.cates', outCateName) + ')' + '<span class="fa fa-minus-circle cate"></span></h3><ul data-cate-id=' + outCateName + '' + ' class="data-cate" style="padding: 0px 0px 0px 20px;"></ul>';
         $('#cateList').appendChild(node);
         outCateName = new Category(outCateName);
         data.cates.push(outCateName);
@@ -613,13 +612,15 @@ function addACate() {
         var newCateName = $('#newCateName').value;
         node.setAttribute('data-list-id', newCateName);
         node.innerHTML ='<span class="fa fa-file-o fa-fw"></span>' + newCateName + '(' + toCount('data.lists', newCateName) + ')'+ '<span class="fa fa-minus-circle list"></span>';
-        $('[data-cate-id='+cate+']').children[2].appendChild(node);
+        $('[data-cate-id='+cate+']').children[1].appendChild(node);
         removeClass($('.selectedCate')[0], 'selectedCate');
         addClass(node, 'selectedCate');
         // 本地保存
         newCateName = new TaskList(cate, newCateName);
         data.lists.push(newCateName);
         updateData();
+        delegateClickEvent($('.data-cate'), changeClassName);
+        delegateClickEvent($('.data-cate'), changeMedium);
         // removeClass($('.selectedCate')[0], 'selectedCate');
         // addClass()
 
@@ -860,7 +861,7 @@ function initMinus() {
         // }
         datacates = $('h3');
         // datacates = cate.getAttributeNodes('[data-cate-id]');
-    if (window.innerWidth > parseInt('480px')) {
+    if (window.innerWidth > parseInt('770px')) {
         each(datalists, function (list) {
         var minus = list.children[1];
         list.onmouseenter = function () {
