@@ -1,7 +1,7 @@
 // 初始化
 (function () {
     // 初始化左上角返回按钮
-    // addClass($('#back'), 'visit');
+    initBack();
 
     // 初始化左侧分类及子分类
     countAllTask();
@@ -33,13 +33,26 @@
 
 })();
 
+function initBack() {
+    $('#back').style.visibility = 'hidden';
+}
+
+function ingBack() {
+    if (window.innerWidth < '480px') {
+        $('#back').style.visibility = 'visible';
+    }
+}
+
 // 查看所有任务
 $.click($('#allTasks'), showAll)
 function showAll() {
+    ingBack();
     // addClass($('#back')[0], 'active');
     // addClass($('.leftCate')[0], 'visit');
     // addClass($('.midTask')[0], 'active');
     // addClass($('.rightContent')[0], 'active');
+    addClass($('#back'), 'ing');
+    addClass($('.leftCate')[0], 'active');
     if ($('.selectedCate')[0]) {
         removeClass($('.selectedCate')[0], 'selectedCate');
     }
@@ -365,10 +378,13 @@ delegateClickEvent(tasksList, changeClassName);
 // 通过getAttribute取子分类名字（不含未完成任务数）
 // TODO
 function changeMedium(event) {
-        // addClass($('#back'), 'active');
+        ingBack();
+        stopBubble();
         // addClass($('.leftCate')[0], 'visit');
-        addClass($('.midTask')[0], 'active');
-        addClass($('.rightContent')[0], 'active');
+        if (!hasClass($('.leftCate')[0], 'active')) {
+            addClass($('.leftCate')[0], 'active');
+        }
+        // addClass($('.rightContent')[0], 'active');
         event = event || window.event;
         var target = event.target || event.srcElement;
         var listId = target.getAttribute('data-list-id');
@@ -400,20 +416,26 @@ function changeMedium(event) {
 delegateClickEvent(ulList, changeMedium);
 
 // 右侧显示任务详情
-function changeRight() {
-    // addClass($('#back'), 'active');
-    addClass($('.midTask')[0], 'visited');
-    // addClass($('.rightContent')[0], 'visited');
-    var task = $('.selectedTask')[0];
-    var text = task.innerText;
-    each(data.tasks, function (task) {
-        if (task.title === text) {
-            $('#hidTitle').innerHTML = task.title;
-            $('#hidDate').innerHTML = task.time;
-            $('#taskContent').innerText = '';
-            $('#taskContent').innerText = task.content;
+function changeRight(event) {
+    event = event || window.event;
+    var target = event.target || event.srcElement;
+    if (hasClass(target, 'task-title')) {
+        ingBack();
+        if (!hasClass($('.midTask')[0], 'active')) {
+            addClass($('.midTask')[0], 'active');
         }
-    })
+        // addClass($('.rightContent')[0], 'visited');
+        // var task = $('.selectedTask')[0];
+        var text = target.innerText;
+        each(data.tasks, function (task) {
+            if (task.title === text) {
+                $('#hidTitle').innerHTML = task.title;
+                $('#hidDate').innerHTML = task.time;
+                $('#taskContent').innerText = '';
+                $('#taskContent').innerText = task.content;
+            }
+        })
+    }
 }
 delegateClickEvent(tasksList, changeRight);
 
@@ -533,7 +555,8 @@ function addRightContent(obj) {
 // 左侧添加分类按钮
 var addCate = $('#addCate'),
     cancel = $('#cancel'),
-    confirm = $('#confirm'),
+    close = $('#close'),
+    sure = $('#sure'),
     coverStyle = $('#cover').style,
     selectCate = $('#selectCate');
 
@@ -561,9 +584,14 @@ $.click(cancel, function () {
     // console.log('cancel add cate');
     coverStyle.display = 'none';
 });
-$.click(confirm, addACate);
+
+$.click(close, function () {
+    // console.log('cancel add cate');
+    coverStyle.display = 'none';
+});
+$.click(sure, addACate);
 function addACate() {
-    alert('confirm')
+    alert('sure')
 
     node = document.createElement('li');
     // 新增主分类
@@ -635,22 +663,27 @@ function updateData() {
 // 标记完成按钮
 $.click($('#done'), doneTask);
 function doneTask() {
-        var title = $('.selectedTask')[0].innerHTML;
-        each(data.tasks, function (task) {
-            if (task.title === title) {
-                task.isDone = true;
-            }
-        $('.selectedTask')[0].style.color = 'rgba(0, 0, 0, 0.24)'
-        // console.log('check task')
-        })
-        updateData();
+        if (confirm("确定标记任务完成吗？")) {
+            var title = $('.selectedTask')[0].innerHTML;
+            each(data.tasks, function (task) {
+                if (task.title === title) {
+                    task.isDone = true;
+                }
+            $('.selectedTask')[0].style.color = 'rgba(0, 0, 0, 0.24)'
+            // console.log('check task')
+            })
+            updateData();
+        } else {
+            return;
+        }
+
 }
 
 // 编辑按钮
 $.click($('#edit'), editTask);
 function editTask() {
     $('.rightContent')[0].style.display = 'none';
-    $('.rightHideWrap')[0].style.display = 'block';
+    $('.rightHide')[0].style.display = 'block';
     // 初始化编辑界面
     $('#inputTitle').value = $('#hidTitle').innerHTML;  // 任务标题
     $('#inputDate').value = $('#hidDate').innerHTML // 任务时间
@@ -664,7 +697,7 @@ $.click($('#save'), saveEdit);
 function saveEdit() {
 
     $('.rightContent')[0].style.display = 'block';
-    $('.rightHideWrap')[0].style.display = 'none';
+    $('.rightHide')[0].style.display = 'none';
     // XXX：刷新页面，本地数据没有刷新
     $('#hidTitle').innerHTML = $('#inputTitle').value; // 更新标题
     $('#hidDate').innerHTML = $('#inputDate').value; // 更新日期
@@ -736,13 +769,13 @@ function saveEdit() {
 // 添加任务
 $.click($('#addTask'), addATask);
 function addATask() {
-    addClass($('.midTask')[0], 'visit');
-    addClass($('.rightHideWrap')[0], 'active');
+    addClass($('.midTask')[0], 'active');
+    // addClass($('.rightHide')[0], 'active');
     $('#inputTitle').value = '';
     $('#inputContent').value = '';
     $('#inputDate').value = '';
     $('.rightContent')[0].style.display = 'none';
-    $('.rightHideWrap')[0].style.display = 'block';
+    $('.rightHide')[0].style.display = 'block';
     // 初始化编辑界面
     // $('.selectedCate')[0]
     if ($('.selectedTask')[0]) {
@@ -757,7 +790,7 @@ function addATask() {
 $.click($('#return'), returnEdit);
 function returnEdit() {
     $('.rightContent')[0].style.display = 'block';
-    $('.rightHideWrap')[0].style.display = 'none';
+    $('.rightHide')[0].style.display = 'none';
 }
 
 // 删除分类
@@ -765,11 +798,13 @@ delegateClickEvent($('.fa-minus-circle'), deleteCate);
 function deleteCate(event) {
     event = event || window.event;
     var target = event.target || event.srcElement;
-    var father = target.parentNode;      // [data-list-id]
-    var dataid // 'list2'
-    var grandFather = father.parentNode; // [data-cate-id]
+    var father;      // [data-list-id]
+    var dataid; // 'list2'
+    var grandFather;  // [data-cate-id]
     // 删除子分类
     if (hasClass(target, 'list')) {
+        father = target.parentNode;      // [data-list-id]
+        grandFather = father.parentNode; // [data-cate-id]
         dataid = father.getAttribute('data-list-id'); // 'list2'
         grandFather.removeChild(father);
         for (var i = 0; i < data.lists.length; i++) {
@@ -787,6 +822,8 @@ function deleteCate(event) {
     }
     // 删除主分类
     if (hasClass(target, 'cate')) {
+        father = target.parentNode.parentNode;      // [data-list-id]
+        grandFather = father.parentNode;
         dataid = father.getAttribute('data-cate-id');
         grandFather.removeChild(father);
         for (var k = 0; k < data.cates.length; k++) {
@@ -841,7 +878,6 @@ function initMinus() {
         }
     })
 }
-function initMinus(){};
 
 function initColor() {
 
@@ -852,16 +888,27 @@ function initColor() {
     });
 }
 
-
-
-
-
 $.click($('#back'), function () {
-        var visited = $('.visited');
-        each(visited, function (visited) {
-            removeClass(visited, 'visited');
-        })
+    var cateLeftPre = $('.leftCate')[0].getBoundingClientRect().left;
+    var taskLeftPre = $('.midTask')[0].getBoundingClientRect().left;
+    var contentLeft = $('.rightContent')[0].getBoundingClientRect().left;
+    if (cateLeftPre === - window.innerWidth && taskLeftPre === 0) {
+        // removeClass($('.leftCate')[0],'active');
+        $('.leftCate')[0].className = 'leftCate';
+        initBack();
+    }
+    else {
+        if ($('.rightContent')[0].style.display === 'none') {
+            if (confirm('内容还未保存，确认离开吗？')) {
+                $('.rightContent')[0].style.display = 'block';
+                $('.rightHide')[0].style.display = 'none';
+            } else {
+                return;
+            }
 
+        }
+        $('.midTask')[0].className = 'midTask';
+    }
 });
 
 
