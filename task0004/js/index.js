@@ -433,8 +433,8 @@ function changeRight(event) {
             if (task.title === text) {
                 $('#hidTitle').innerHTML = task.title;
                 $('#hidDate').innerHTML = task.time;
-                $('#taskContent').innerText = '';
-                $('#taskContent').innerText = task.content;
+                $('#taskContent').innerHTML = '';
+                $('#taskContent').innerHTML = task.content;
             }
         })
     }

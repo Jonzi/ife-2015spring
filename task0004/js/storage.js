@@ -40,10 +40,22 @@ TaskDetail.prototype = {
     cateList: ["默认分类","使用说明"],
     time: '2017-03-11',
     // JSON.stringify(2017-3-11) ---2003
-    title: "Readme Please",
-    content: "Enjoy it",
+    title: 'Readme',
+    content: ''
+        + '本应用使用原生Javascript开发，数据存储在本地硬盘。'
+        + '<br>'
+        + '支持两级分类。'
+        + '<br>'
+        + '左侧第一个按钮为添加分类按钮，支持添加主分类和子分类。'
+        + '<br>'
+        + '第二个按钮为添加任务按钮，请先选中子分类后再添加任务。'
+        + '<br>'
+        + '右侧上方分别为标记任务完成按钮和编辑按钮。'
+        + '<br>'
+        + '已完成的任务字体颜色将变淡。'
+        + '<br>'
+        + '支持删除分类，鼠标移动到分类列表将出现删除图标，谨慎删除，删除后不可恢复',
     isDone: true
-
 };
 
 var defaultCate = Category.prototype,
