@@ -717,6 +717,9 @@ body {
 .footer-nav hr {
     width: 100%;
     margin: 0 auto;
+    border-top: 1px;
+    border-left: 0;
+    border-right: 0;
 }
 .link {
     clear: left;
