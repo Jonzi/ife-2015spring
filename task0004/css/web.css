@@ -19,7 +19,7 @@ header {
     height: 45px;
     top: 0;
     left: 0;
-    background: #448aff;
+    background: #3367d6;
     line-height: 45px;
     color: #fff;
 }
@@ -119,11 +119,14 @@ span {
     margin-right: 5px;
 }
 
+.fa-plus {
+    margin-right: 0;
+}
 
 #addCate, #addTask {
     position: absolute;
     bottom: 40px;
-    right: 0;
+    right: 15px;
     width: 40px;
     height: 40px;
     border-radius: 50%;

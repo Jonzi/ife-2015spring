@@ -19,8 +19,8 @@
         <div class="leftCate">
             <h2 id ="allTasks">
                 <span class="fa fa-list-ul"></span>所有任务
-                    <span id="taskNum"></span></h2>
-
+                <span id="taskNum"></span>
+            </h2>
             <h2>
                 <span class="fa fa-list-ul"></span>分类列表
             </h2>
@@ -74,29 +74,26 @@
             <div class="task_date">
                 任务日期：<span id="hidDate"></span>
             </div>
-            <div id="taskContent" class="task_content" contenteditable="true">
+            <div id="taskContent" class="task_content" contenteditable="true"></div>
+        </div>
+        <div class="rightHide">
+            <div class="task_title">
+                任务标题：
+                <input type="text" name="title" id="inputTitle" placeholder="请在此输入任务标题">
+            </div>
+            <div class="task_date">
+                任务日期：
+                <input type="date" name="date" id="inputDate">
+            </div>
+            <div class="content">
+                <textarea name="content" id="inputContent" placeholder="请在此输入任务内容" cols="30" rows="10"></textarea>
+                <div id="saveOrReturn">
+                    <button id="save">保存</button>
+                    <button id="return">取消</button>
+                </div>
             </div>
         </div>
 
-        <div class="rightHideWrap">
-            <div class="rightHide">
-                <div class="task_title">
-                    任务标题：
-                    <input type="text" name="title" id="inputTitle" placeholder="请在此输入任务标题">
-                </div>
-                <div class="task_date">
-                    任务日期：
-                    <input type="date" name="date" id="inputDate">
-                </div>
-                <div class="content">
-                    <textarea name="content" id="inputContent" placeholder="请在此输入任务内容" cols="30" rows="10"></textarea>
-                    <div id="saveOrReturn">
-                        <button id="save">保存</button>
-                        <button id="return">取消</button>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div id="cover">
         <!-- <div class="cover_wrap"> -->
             <!-- <div class="cover_title"><p>新增分类</p></div> -->
@@ -117,12 +114,10 @@
                 <button id="cancel">取消</button>
             </div>
         </div>
-        </div>
     </div>
 
     <script type="text/javascript" src="js/todo.util.js"></script>
     <script type="text/javascript" src="js/storage.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
-    <!-- <script type="text/javascript" src="js/index3.js"></script> -->
 </body>
 </html>
