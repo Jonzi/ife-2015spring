@@ -313,7 +313,7 @@ textarea#inputContent {
 }
 
 #cover {
-    opacity: 0;
+    display: none;
     z-index: 4;
     width: 88%;
     height: 180px;

@@ -584,12 +584,12 @@ selectCate.onchange = function () {
 }
 $.click(cancel, function () {
     // console.log('cancel add cate');
-    coverStyle.opacity = 0;
+    coverStyle.display = 'none';
 });
 
 $.click(close, function () {
     // console.log('cancel add cate');
-    coverStyle.opacity = 0;
+    coverStyle.display = 'none';
 });
 $.click(sure, addACate);
 function addACate() {
@@ -626,7 +626,7 @@ function addACate() {
 
         // TODO：正则排除重复空类名
     }
-    coverStyle.opacity = 0;
+    coverStyle.display = 'none';
     initMinus();
     // node = document.createElement('li');
     // var newCateName = $('#newCateName').value;
@@ -646,7 +646,7 @@ function addACate() {
 $.on(addCate, 'click', function () {
     // 不保留上次选中项
     $('#selectCate').options[0].selected = true; // 设置默认显示文本
-    coverStyle.opacity = 1;
+    coverStyle.display = 'block';
     $('#newCateName').value = '';
 });
 
