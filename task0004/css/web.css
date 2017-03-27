@@ -4,8 +4,6 @@
 
 }
 
-
-
 html {
     font-size: 16px;
 }
@@ -26,16 +24,7 @@ header {
 
 #back {
     position: absolute;
-    /*visibility: hidden;*/
 }
-
-/*.init {
-    visibility: hidden;
-}
-
-.ing {
-    visibility: visible;
-}*/
 
 h1 {
     text-align: center;
@@ -107,13 +96,8 @@ span.fa.fa-minus-circle {
 }
 #cateList li {
     margin-left: 15px;
-    /*ÃƒÆ’Ã‚Â¨Ãƒâ€šÃ‚Â®Ãƒâ€šÃ‚Â¾ÃƒÆ’Ã‚Â§Ãƒâ€šÃ‚Â½Ãƒâ€šÃ‚Â®ÃƒÆ’Ã‚Â¨Ãƒâ€šÃ‚Â·Ãƒâ€¦Ã‚Â¸span.minus-circleÃƒÆ’Ã‚Â§ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂºÃƒâ€šÃ‚Â¸ÃƒÆ’Ã‚Â¥Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢*/
     line-height: 2;
 }
-
-
-
-
 
 span {
     margin-right: 5px;
@@ -136,14 +120,6 @@ span {
     line-height: 55px;
     color: #FFFFFF;
 }
-#addTask {
-    /*left: 229px;*/
-    /* text-shadow: 0 0 rgba(126, 57, 199, 0.48); */
-}
-
-div#addCate {
-    /*left: 192px;*/
-}
 .midTask {
     position: absolute;
     left: 0;
@@ -156,42 +132,18 @@ div#addCate {
 
 
 .status {
-    /*text-align: center;*/
-    /*width: 264px;*/
-    /*height: 45px;*/
-    /*padding: 0px 0 5px 0;*/
     line-height: 45px;
-    /* background-color: #ACACAC; */
 }
 
 .status ul {
     border-bottom: 1px solid rgba(197, 197, 197, 0.38);
     display: flex;
     display: -webkit-flex;
-    /*justify-content: space-between;*/
-
 }
 
 .status li {
-    /*cursor: pointer;*/
-    /*float: left;*/
-    /* color: #FFF; */
-    /* opacity: .8; */
-    /*width: 88px;*/
-    /*height: 30px;*/
     text-align: center;
     flex: auto;
-    /*line-height: 30px;*/
-/*    appearance: button;
-    -webkit-appearance: button;
-    -moz-appearance: button;*/
-    /* background-color: #eeeeee; */
-}
-
-
-.status li:first-child {
-    /* margin-left: 10px; */
-    /* width: 100px; */
 }
 
 .status li.choose {
@@ -210,32 +162,19 @@ div#addCate {
 
 .DoneorEdit {
     float: right;
-    /* display: none; */
     margin-right: 5px;
 }
 
 .task_title {
-    /* position: fixed; */
-    /* top: 41px; */
-    /* display: block; */
-    /* height: 40px; */
     padding-left: 10px;
     line-height: 40px;
     background-color: rgb(253, 253, 253);
     border-bottom: 1px solid rgb(238, 238, 238);
 }
 
-span#hidTitle {
-    /* height: 40px; */
-    /* line-height: 40px; */
-}
-
 .task_date {
     padding-left: 10px;
-    /* position: relative; */
-    /* top: 41px; */
     display: block;
-    /* overflow: hidden; */
     line-height: 40px;
     background-color: rgb(253, 253, 253);
     border-bottom: 1px solid rgb(238, 238, 238);
@@ -246,12 +185,9 @@ span#hidTitle {
     display: none;
     height: 100%;
     position: absolute;
-    /* bottom: 0; */
-    /* float: right; */
     top: 0;
     right: 0;
     left: 0;
-    /*margin: 16px 16px 0px 16px;*/
     background-color: #FFFFFF;
 }
 
@@ -266,51 +202,25 @@ textarea#inputContent {
     font-size: 16px;
 }
 
-/*textarea {
-    min-height: 200px;
-    resize: none;
-    width: 100%;
-    border: none;
-    overflow-y: visible;
-}*/
-
-
 .task_content {
     background-color: rgb(250, 250, 250);
-    /* width: 500px; */
-    /* min-height: 200px; */
-    /* max-height: 90%; */
-    /* margin-left: -100px; */
     position: absolute;
-    /* padding: 10px 10px 0 10px; */
     z-index: 3;
     right: 0;
     top: 82px;
     left: 0;
     bottom: 0px;
     padding: 25px;
-    /* height: 200px; */
-    /* margin-left: 520px; */
-    /*padding: 3px;*/
-    /* outline: 0; */
-    /*border: 1px solid #e4e4e4;*/
     font-size: 16px;
     word-wrap: break-word;
-    /* overflow-x: hidden; */
     overflow-y: auto;
     -webkit-user-modify: read-only;
 }
 .content {
     width: 100%;
     bottom: 26px;
-    /* margin-bottom: 10px; */
     top: 82px;
-    /* height: 550px; */
-    /* height: 100%; */
     position: absolute;
-    /* bottom: 0; */
-    /* overflow: hidden; */
-    /* color: black; */
 }
 
 #cover {
@@ -320,18 +230,11 @@ textarea#inputContent {
     height: 180px;
     margin-top: -90px;
     background-color: rgb(253, 253, 253);
-    /* margin: 0 auto; */
-    /* margin-left: 25%; */
-    /* margin-top: -90px; */
-    /* margin-bottom: -125px; */
-    /* line-height: 250px; */
     position: absolute;
     left: 50%;
     margin-left: -44%;
     top: 50%;
     box-shadow: blue;
-    /* border-radius: 10px; */
-    /* clear: both; */
 }
 
 .cover_title {
@@ -339,22 +242,13 @@ textarea#inputContent {
     height: 30px;
     padding-left: 10px;
     line-height: 30px;
-    /* border-bottom: 1px dashed; */
     background-color: #3367d6;
-    /* border-radius: 10px; */
 }
 
 .cover_mainClass {
-    /* right: 10px; */
     width: 170px;
     height: 25px;
-    /* position: absolute; */
-    /* float: right; */
-    /* margin: 0 auto; */
-    /* margin-right: 10px; */
 }
-
-
 
 .cover_content {
     margin: 10px;
@@ -382,13 +276,9 @@ input#newCateName {
     position: absolute;
     width: 100%;
     margin: 0 auto;
-    /* text-align: right; */
-    /* line-height: 67px; */
     height: 67px;
-    /* z-index: 6; */
 }
 div#close {
-    /* float: right; */
     position: absolute;
     right: 10px;
     top: 50%;
@@ -423,24 +313,6 @@ div#saveOrReturn {
     bottom: 10px;
 }
 
-.leftCateWrap {
-    /* height: 100%; */
-    /* width: 250px; */
-    /* float: left; */
-    /* overflow: scroll; */
-}
-
-div#addCate {}
-
-.addCateWrap {
-    /* position: absolute; */
-    /* float: left; */
-    /* width: 232px; */
-    /* height: 100%; */
-    /* z-index: 999; */
-    /* margin-top: -700px; */
-}
-
 ul#cateList {
     position: absolute;
     left: 0;
@@ -460,10 +332,6 @@ ul#tasksList {
     padding: 0 20px 0 20px;
 }
 
-/*.data-cate>li:hover {
-    background-color: rgb(76,100,187);
-}*/
-
 .data-cate>li:active {
     background-color: rgba(0,0,0,.14);
 }
@@ -472,34 +340,17 @@ li.selectedCate {
     background-color: rgb(244, 244, 244);
 }
 
-
-/*.status li:hover {
-    background-color: rgba(135, 165, 245, 0.71);
-}*/
 li.task-title {
     border-bottom: 1px solid rgba(197, 197, 197, 0.38);
 }
 
 .selectedStatus {
     background-color: rgb(244, 244, 244);
-    /* background-image: linear-gradient(120deg, #155799, #159957); */
 }
 
 li.task-title.selectedTask {
     background-color: #f3f3f3;
 }
-
-
-
-/*.active {
-    transform: translate3d(-100%, 0, 0);
-}*/
-/*.visit {
-    transform: translate3d(-100%, 0, 0);
-}
-.visited {
-    transform: translate3d(-200%, 0 ,0);
-}*/
 
 .active{
     transform: translate3d(-100%, 0, 0);
