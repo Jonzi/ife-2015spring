@@ -14,18 +14,68 @@ function isArray(arr) {
 }
 */
 
+// 判断日期
+function isDate(date) {
+    return Object.prototype.toString.call(date) === '[object Date]';
+}
+
 // 判断fn是否为一个函数，返回一个bool值
 function isFunction(fn) {
+    // chrome下,'function' == typeof /a/ 为true.
     return Object.prototype.toString.call(fn) === '[object Function]';
 }
+
+// 判断正则
+function isRegExp(arg) {
+    return Object.prototype.call(arg) === '[object RegExp]';
+}
+
+/**
+ * 判断一个对象是不是字面量对象，即判断这个对象是不是由{}或者new Object类似方式创建
+ *
+ * 事实上来说，在Javascript语言中，任何判断都一定会有漏洞，因此本方法只针对一些最常用的情况进行了判断
+ *
+ * @returns {Boolean} 检查结果
+ */
+function isPlain(obj){
+    var hasOwnProperty = Object.prototype.hasOwnProperty,
+        key;
+    if ( !obj ||
+         //一般的情况，直接用toString判断
+         Object.prototype.toString.call(obj) !== "[object Object]" ||
+         //IE下，window/document/document.body/HTMLElement/HTMLCollection/NodeList等DOM对象上一个语句为true
+         //isPrototypeOf挂在Object.prototype上的，因此所有的字面量都应该会有这个属性(Object.prototype isPrototypeOf(obj) === true)
+         //对于在window上挂了isPrototypeOf属性的情况，直接忽略不考虑
+         !('isPrototypeOf' in obj)
+       ) {
+        return false;
+    }
+
+    //判断new fun()自定义对象的情况
+    //constructor不是继承自原型链的
+    //并且原型中有isPrototypeOf方法才是Object
+    if ( obj.constructor &&
+        !hasOwnProperty.call(obj, "constructor") &&
+        !hasOwnProperty.call(obj.constructor.prototype, "isPrototypeOf") ) {
+        // hasOwnProperty.call(obj.constructor.prototype,"isPrototypeOf" === obj.constructor.prototype.hasOwnProperty("isPrototyeOf"))
+        return false;
+    }
+    //判断有继承的情况
+    //如果有一项是继承过来的，那么一定不是字面量Object
+    //OwnProperty会首先被遍历，为了加速遍历过程，直接看最后一项
+    for ( key in obj ) {}
+    return key === undefined || hasOwnProperty.call( obj, key );
+}
+
+
 
 // 将对象及其名称作为参数传入时，显示对象的属性
 function showProps(obj, objName) {
   var result = "";
-  for (var i in obj) {
+  for (var i in obj) {  // 遍历obj的key
     console.log(i);
     console.log(obj[i]);
-    if (obj.hasOwnProperty(i)) {
+    if (obj.hasOwnProperty(i)) {  // 过滤继承来的属性
         result += objName + "." + i + " = " + obj[i] + "\n";
     }
   }
@@ -48,24 +98,63 @@ console.log(showProps(srcObj,'srcObj'));
 
 // 使用递归来实现一个深度克隆，可以复制一个目标对象，返回一个完整拷贝
 // 被复制的对象类型会被限制为数字、字符串、布尔、日期、数组、Object对象。不会包含函数、正则对象等
-function cloneObject(src) {
-    var o;
-    if (Object.prototype.toString.call(src) === "[object Array]") {
-        o = [];
-    } else {
-        o = {};
-    }
-    for (var i in src) {
-        if (src.hasOwnProperty(i)) {
-            if (typeof src[i] === "object") {
-                o[i] = cloneObject(src[i]);
-            } else {
-                o[i] = src[i];
+function cloneObject1(src) {
+    var newValue;
+    if (!src
+        || src instanceof Number
+        || src instanceof String
+        || src instanceof Boolean) {
+        newValue = src; // 基本数据类型
+    } else if (isDate(src)) {
+        newValue = new Date(src);   // 日期
+    } else if (isArray(src) || isPlain(src)) {
+        newValue = isArray(src) ? [] : {};
+        for (var item in src) {
+            // for in 遍历数组或对象是为了访问扩展的属性（不是通过索引，类似对象属性）
+            // 过滤继承来的属性
+            if (src.hasOwnProperty(item)
+                && !isFunction(src[item]
+                && !isRegExp(src[item]))) {
+                newValue[item] = arguments.callee(src[item]);
+            }
+        } // end for
+    } // end else
+    return newValue;
+}
+
+// 用JSON来克隆
+function cloneObject2(src) {
+    var trans = JSON.stringify(obj);
+    var newValue = JSON.parse(trans);
+    return newValue;
+}
+
+// review中的用法
+function cloneObject (source) {
+    var result = source, i, len;
+    if (!source
+        || source instanceof Number
+        || source instanceof String
+        || source instanceof Boolean) {   // 基本数据类型
+        return result;
+    } else if (isArray(source)) {          // 数组
+        result = [];
+        var resultLen = 0;
+        for (i = 0, len = source.length; i < len; i++) {
+            result[resultLen++] = cloneObject(source[i]);
+        }
+    } else if (isPlain(source)) {           // 对象
+        result = {};
+        for (i in source) {
+            if (source.hasOwnProperty(i)) {
+                result[i] = cloneObject(source[i]);
             }
         }
     }
-    return o;
+    return result;
 }
+// 克隆数组和对象这中Object时，要用到递归，因为对象可能里面的元素会不止一个，对每个元素都要进行一次判断该元素是基本数据类型还是对象
+// 深度克隆的深度体现在源对象改变，克隆的新对象也随之改变
 
 /*
 // 测试用例：
@@ -90,7 +179,51 @@ console.log(tarObj.b.b1[0]);    // "hello"
 */
 
 //数组去重
-function uniuqArr(arr) {
+function uniqArray(arr) {
+    var len = arr.length,
+        i,
+        datum,
+        result = arr.slice(0);
+    // 从后往前循环比较，相同时删除后一个
+    while (--len) {
+        datum = result[len]; // 初始值为数组最后一个
+        i = len; // 初始值为索引最大值
+        while (i--) {
+            if (datum === result[i]) {
+                result.splice(len, 1);
+                break;
+            }
+        }
+    }
+    return result;
+    // 原数组不变，最后返回一个去重后的新数组
+}
+
+// hash
+function uniqArray1(arr) {
+    var obj = {}; // 存储键值对，键位数组元素，值为true
+    var result = [];
+    for (var i = 0; i < arr.length; i++) {
+        var key = arr[i];
+        if (!obj[key]) {
+            result.push(key);
+            obj[key] = true;
+        }
+    }
+    return result;
+}
+
+// hash + es5(最快)
+function uniqArray2(arr) {
+    var obj = {};
+    for (var i = 0; i < arr.length; i++) {
+        obj[arr[i]] = true;
+    }
+    return Object.keys(obj);
+}
+
+// 新建空列表，比较新列表与原列表，利用indexof查找
+function uniqArray3(arr) {
     var newArr = [];
     for (var i in arr) {
         if (newArr.indexOf(arr[i]) === -1) {
@@ -99,43 +232,73 @@ function uniuqArr(arr) {
     }
     return newArr;
 }
-/*
-var arr = [2,3,3,4];
-console.log(uniuqArr(arr));
 
+// 使用示例
+var a = [1, 3, 5, 7, 5, 3];
+var b = uniqArray(a);
+// console.log(b) // [1, 3, 5, 7]
 
-//trim方法去除空格
-
-//比较笨的方法
-function simpleTrimW(str) {
-    var newStr = "";
-    var pos = str.indexOf(" ");
-    while(pos > -1) {
-        var pos_previous = pos;
-        pos = str.indexOf(" ", pos + 1);
-        if (pos != pos_previous +1 ) {  //说明中间隔了非空格字符
-            break;
-        }
-    }
-    var posTwo = str.lastIndexOf(" ");
-    console.log(posTwo);
-    while(posTwo > -1) {
-        var posTwo_pre = posTwo;
-        posTwo = str.lastIndexOf(" ", posTwo - 1);
-        if (posTwo != posTwo_pre - 1) {
-            break;
-        }
-    }
-    return(str.slice(pos_previous + 1, posTwo_pre));
+var a1 = 10000;
+var a = [];
+while (a1--) {
+    a.push(a1%2);
 }
-var str = "    hi ed  ";
-console.log(simpleTrim(str)); //hi ed
+// console.log(a);
+
+// // use chrome dev tools
+// console.time('uniqArray')
+// console.log(uniqArray(a).length);   // 2 -->[0,1]
+// console.timeEnd('uniqArray')    // 7.76ms
+
+// console.time('uniqArray1')
+// console.log(uniqArray1(a).length);
+// console.timeEnd('uniqArray1') // 1.04ms
+
+// console.time('uniqArray2')
+// console.log(uniqArray2(a).length);
+// console.timeEnd('uniqArray2') // 0.82ms
+
+// console.time('uniqArray3')
+// console.log(uniqArray3(a).length);
+// console.timeEnd('uniqArray3') // 2.447ms
+
+// 中级班同学跳过此题
+// 实现一个简单的trim函数，用于去除一个字符串，头部和尾部的空白字符
+// 假定空白字符只有半角空格、Tab
+// 练习通过循环，以及字符串的一些基本方法，分别扫描字符串str头部和尾部是否有连续的空白字符，并且删掉他们，最后返回一个完成去除的字符串
+
+//自己的方法
+// pos初始值为头部第一个空格的索引（只考虑 >-1 即有空格）
+
+// function simpleTrimW(str) {
+//     var newStr = "";
+//     var pos_front = str.indexOf(" ");
+//     while(pos_front > -1) {
+//         // 从前往后查
+//         var pos_pre = pos_front;
+//         pos_front = str.indexOf(" ", pos_front + 1);
+//         if (pos_front != pos_pre +1 ) {  //说明中间隔了非空格字符
+//             break;
+//         }
+//     }
+//     // 从后往前查
+//     var pos_end = str.lastIndexOf(" ");
+//     while(pos_end > -1) { // 存在空格符
+//         var pos_pre = pos_end;
+//         pos_end = str.lastIndexOf(" ", pos_end - 1);
+//         if (pos_end != pos_pre - 1) {
+//             break;
+//         }
+//     }
+//     return(str.slice(pos_pre + 1, pos_pre));
+// }
+// var str = "    hi ed  ";
+// console.log(simpleTrim(str)); //hi ed
 
 //去除所有空格和制表符
 function simpleTrim1(str) {
     var newStr = "";
     for (var i = 0; i < str.length; i++) {
-
         if (str[i] != " " && str [i] != "\t") {
            newStr = newStr.concat(str[i]); //中间出现的也会被去除
         }
@@ -143,9 +306,8 @@ function simpleTrim1(str) {
     console.log(newStr);
 }
 var str = "   h i           io  \t o";
-console.log(str);
-simpleTrim1(str); // hiioo
-*/
+// console.log(str);
+// simpleTrim1(str); // hiioo
 
 function simpleTrim(str) {
     var newStr = "";
@@ -167,7 +329,41 @@ var str = "  hel  log     ";
 simpleTrim(str); //hel  log
 */
 
+function simpleTrim2(str) {
+    function isEmpty(c) {
+        return /\s/.test(c);
+    }
+
+    for (var i = 0; i < str.length; i++) {
+        if (!isEmpty(str.charAt(i))) {
+            break;
+        }
+    }
+
+    for (var j = str.length - 1; j >= 0; j--) {
+        if (!isEmpty(str.charAt(j-1))) {
+            break;
+        }
+    }
+
+    if (i > j) {
+        return '';
+    }
+
+    return str.substring(i, j);
+}
+
+ // 对字符串头尾进行空格字符的去除、包括全角半角空格、Tab等，返回一个字符串
 function trim(str) {
+
+    var trimer = new RegExp("(^[\\s\\t\\xa0\\u3000]+)|([\\u3000\\xa0\\s\\t]+\x24)", "g");
+
+    return String(str).replace(trimer, "");
+
+}
+
+
+function trim1(str) {
     return str.replace(/^\s+|\s+$/g, '');
 }
 //var str = '   hi!  ';
@@ -176,10 +372,11 @@ function trim(str) {
 
 // 实现一个遍历数组的方法，针对数组中每一个元素执行fn函数，并将数组索引和元素作为参数传递
 function each(arr, fn) {
-    for (var i in arr) {  // 遍历数组
+    for (var i = 0, l = arr.length; i < 1; i++) {  // 遍历数组
         fn(arr[i],i);     // 针对数组中每一个元素执行fn函数
     }
 }
+// 其中fn函数可以接受两个函数：item和index
 /*
 var arr = ['java', 'c', 'php', 'html'];
 function output(item) {
@@ -191,7 +388,7 @@ var arr = ['java', 'c', 'php', 'html'];
 function output(item, index) {
     console.log(index + ': ' + item)
 }
-each(arr, output);//0: java
+each(arr, output);// 0: java
                   // 1: c
                   // 2: php
                   // 3: html
@@ -216,18 +413,87 @@ function getObjectLength(obj) {
     return n;
 }
 
-/*
-// 使用示例
-var obj = {
-    a: 1,
-    b: 2,
-    c: {
-        c1: 3,
-        c2: 4
-    }
-};
-console.log(getObjectLength(obj)); // 3
-*/
+// 更简单的方法
+function getObjectLength1(obj) {
+    return Object.keys(obj).length;
+}
+
+// Object.keys兼容老式浏览器
+var getObjectLength2 = (function() {
+    'use strict';
+    var hasOwnProperty = Object.prototype.hasOwnProperty,
+        hasDontEnumBug = !({
+            toString: null
+        }).propertyIsEnumerable('toString'),
+        dontEnums = [
+            'toString',
+            'toLocaleString',
+            'valueOf',
+            'hasOwnProperty',
+            'isPrototypeOf',
+            'propertyIsEnumerable',
+            'constructor'
+        ],
+        dontEnumsLength = dontEnums.length;
+
+    return function(obj) {
+        if (typeof obj !== 'object' && (typeof obj !== 'function' || obj === null)) {
+            throw new TypeError('getObjectLength called on non-object');
+        }
+
+        var result = [],
+            prop, i;
+
+        for (prop in obj) {
+            if (hasOwnProperty.call(obj, prop)) {
+                result.push(prop);
+            }
+        }
+
+        if (hasDontEnumBug) {
+            for (i = 0; i < dontEnumsLength; i++) {
+                if (hasOwnProperty.call(obj, dontEnums[i])) {
+                    result.push(dontEnums[i]);
+                }
+            }
+        }
+        // return result;  --> will return Object.keys
+        return result.length; //--> will return Object.keys.length
+    };
+}());
+// 简单点的兼容
+function getObjectLength3(obj) {
+    if (!Object.keys) {
+        Object.keys = function (o) {
+            if (o !== Object(o)) {
+                throw new TypeError('Object.keys called on a non-object');
+                var k = [], p;
+                for (p in o) {
+                    if (Object.prototype.hasOwnProperty.call(o, p)) {
+                        k.push(p);
+                    }
+                // return k; --> will return Object.keys
+                return k.length;
+                } // end for
+            } // end o !== Object(o)
+        } // end function
+    } // end !Object.keys
+    return Object.keys(obj).length;
+}
+
+// // 使用示例
+// var obj = {
+//     a: 1,
+//     b: 2,
+//     c: {
+//         c1: 3,
+//         c2: 4
+//     }
+// };
+// console.log(Object.keys(obj));  // ['a', 'b', 'c']
+// console.log(getObjectLength(obj)); // 3
+// console.log(getObjectLength3(obj)); // 3
+
 
 // 判断是否为邮箱地址
 function isEmail(emailStr) {

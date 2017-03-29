@@ -27,95 +27,70 @@
     // 初始化删除按钮
     initMinus();
 
+    // 任务排序
+    data.tasks.sort('time');
+
 })();
 
+// 增删改查后刷新数据
 function updateData() {
     setData('cates', data.cates);
     setData('lists', data.lists);
     setData('tasks', data.tasks);
 }
 
-function initBack() {
-    $('#back').style.visibility = 'hidden';
-}
-
-function ingBack() {
-    if (window.innerWidth < parseInt('770px')) {
-        console.log(window.innerWidth);
-        $('#back').style.visibility = 'visible';
-    }
-}
-
-// 查看所有任务
+// 点击查看所有任务
 $.click($('#allTasks'), showAll)
 function showAll() {
-    ingBack();
+    // 移动端
+    ingBack();      // 返回按钮
     addClass($('#back'), 'ing');
-    addClass($('.leftCate')[0], 'active');
+    addClass($('.leftCate')[0], 'active');  // 整张页面左移
+
+
     if ($('.selectedCate')[0]) {
-        removeClass($('.selectedCate')[0], 'selectedCate');
+        removeClass($('.selectedCate')[0], 'selectedCate'); // 移除初始化样式
     }
-    addClass($('#allTasks'), 'selectedCate');
+    addClass($('#allTasks'), 'selectedCate');   // 添加选中样式
+    // 展示所有任务
     $('#tasksList').innerHTML = '';
+    // sortDate();
     each(data.tasks, function (task) {
         $('#tasksList').innerHTML += '<li><ul class = data-task isDone ='+ task.isDone + '><li class="task-time">' +task.time+ '</li><li class = task-title>'  +task.title+'</li></ul></li>'
     })
     initColor();
 }
-var arr;
-function sortDate() {
-    updateData();
-    arr = [];
-    each(data.tasks, function (task) {
-        var text = task.time;
-        arr.push(text);
-    })
-    arr.sort(function (a, b) {
-        return new Date(a).getTime() - new Date(b).getTime();
-    })
-    console.log(arr);
-    return  (function () {
-        aa = [];
-        for (var i = 0; i < arr.length; i++) {
-            for (var j = 0; j < data.tasks.length; j++) {
-                if (data.tasks[j].time === arr[i]) {
-                    aa = aa.concat(data.tasks[j]);
-                }
-            }
-        console.log(aa);
 
+// 比较算法
+function compare(properyName){
+    return function(obj1,obj2) {
+        var val1 = obj1[properyName];
+        var val2 = obj2[properyName];
+        if (val1 < val2) {
+            return -1;
         }
-        console.log(arr);
-        console.log(aa);
-        data.tasks = aa;
-    })()
-}
-
-// 日期排序
-function sortTask() {
-    for (var i = 0; i < data.tasks.length; i++) {
-        if (newTask.time > data.task[i] && newTask.time < data.tasks[i+1]) {
-            data.tasks.splice(i+1, 0 , newTask)
+        else if (val1 > val2) {
+            return 1;
+        }
+        else {
+            return 0;
         }
     }
 }
-console.log(data.tasks);
 
-
-
-
-
-
-
+// 初始化下拉框
 function initSelectCate() {
     updateData();
     var num = 1;
+    // 默认主分类
     $('#selectCate').innerHTML = '<option value = 0 >' + '新增主分类' + '</option>';
     each(data.cates, function (cate) {
         $('#selectCate').innerHTML += '<option value =' + num + '>' + cate.category + '</option>';
         num++;
     })
 }
+
+// 初始化分类列表，任务列表，任务状态选中样式
 function initSelected() {
     // addClass($('[data-cate-id=默认分类]'), 'selected');  会连带子节点一起取到
     // addClass($('#cateList span')[1], 'selected')
@@ -124,11 +99,12 @@ function initSelected() {
     addClass($('.task-title')[0], 'selectedTask');
 }
 
-
+// 计算所有任务数
 function countAllTask() {
     $('#taskNum').innerHTML = '(' + toCount('allTasks') + ')';
 }
 
+// 初始化左侧分类
 function addCate(obj) {
     var liCate = $('[data-cate-id=' + obj.category + ']');
     if (!liCate) {
@@ -140,14 +116,31 @@ function addCate(obj) {
 
     }
 }
-
+// 初始化左侧子分类
+function addList(obj) {
+    var liList = $('[data-cate-id=' + obj[0] + ']');
+    // new TaskList出来的对象是数组
+    if (!liList.getElementsByTagName('ul')[0]) {
+        cateList = document.createElement('ul');
+        cateList.setAttribute('data-cate-id', obj[0]);
+        cateList.className = 'data-cate';
+        cateList.style.padding = '0 0 0 20px';
+        cateList.innerHTML=  '<li data-list-id=' + obj[1] + '><span class="fa fa-file-o fa-fw"></span>'
+        + obj[1] + '(' + toCount('data.lists', obj[1]) + ')' + '<span class="fa fa-minus-circle list"></span></li>';
+        liList.appendChild(cateList);
+        return; // 不return会重复第一个任务
+    }
+    if (liList.getElementsByTagName('ul')[0]) {
+        liList.getElementsByTagName('ul')[0].innerHTML +=  '<li data-list-id=' + obj[1] + '><span class="fa fa-file-o fa-fw"></span>'
+    + obj[1] + '(' + toCount('data.lists', obj[1]) + ')'+ '<span class="fa fa-minus-circle list"></span></li>';
+    }
+}
 // 鼠标点击切换样式
 // 取所有子分类
-var listItem = [];
-var ulList = document.getElementsByClassName('data-cate');
-var statusList = document.getElementsByClassName('data-status');
-var tasksList = $('.data-lists');
-
+var listItem = [],
+    cateList = $('.data-cate'),
+    statusList = $('.data-status'),
+    tasksList = $('.data-lists');
 
 // 切换样式
 // 无论点击多少次都应该是只添加一次类名
@@ -168,12 +161,16 @@ function changeClassName(event) {
             targetParentClassName = target.parentNode.className;
         switch (targetParentClassName) {
             case 'data-cate':
+                // 在分类列表里进行切换时
+                // 如果之前选中了所有任务
+                // 要移除样式
                 if (hasClass($('#allTasks'), 'selectedCate')) {
                     removeClass($('#allTasks'), 'selectedCate');
                 }
-                for (var i = 0; i < ulList.length; i++) {
+
+                for (var i = 0; i < cateList.length; i++) {
                     updateData();
-                    var liList = ulList[i].getElementsByTagName('li');
+                    var liList = cateList[i].getElementsByTagName('li');
                     each(liList, function (item) {
                         listItem.push(item);
                         // console.log(listItem);
@@ -283,7 +280,7 @@ function changeClassName(event) {
             }
     }
 }
-delegateClickEvent($('.data-cate'), changeClassName);
+delegateClickEvent(cateList, changeClassName);
 delegateClickEvent(statusList, changeClassName);
 delegateClickEvent(tasksList, changeClassName);
 
@@ -293,13 +290,14 @@ delegateClickEvent(tasksList, changeClassName);
 // TODO
 function changeMedium(event) {
         updateData();
+
+        // 移动端
         ingBack();
         stopBubble();
-        // addClass($('.leftCate')[0], 'visit');
         if (!hasClass($('.leftCate')[0], 'active')) {
             addClass($('.leftCate')[0], 'active');
         }
-        // addClass($('.rightContent')[0], 'active');
+
         event = event || window.event;
         var target = event.target || event.srcElement;
         var listId = target.getAttribute('data-list-id');
@@ -323,51 +321,31 @@ function changeMedium(event) {
         })
 
 }
-delegateClickEvent(ulList, changeMedium);
+delegateClickEvent(cateList, changeMedium);
 
 // 右侧显示任务详情
 function changeRight(event) {
     event = event || window.event;
     var target = event.target || event.srcElement;
     if (hasClass(target, 'task-title')) {
+
+        // 移动端
         ingBack();
         if (!hasClass($('.midTask')[0], 'active')) {
             addClass($('.midTask')[0], 'active');
         }
+
         var text = target.innerText;
         each(data.tasks, function (task) {
             if (task.title === text) {
                 $('#hidTitle').innerHTML = task.title;
                 $('#hidDate').innerHTML = task.time;
-                $('#taskContent').innerHTML = '';
                 $('#taskContent').innerHTML = task.content;
             }
         })
     }
 }
 delegateClickEvent(tasksList, changeRight);
-
-// 初始化左侧子分类
-function addList(obj) {
-    var liList = $('[data-cate-id=' + obj[0] + ']');
-    // new TaskList出来的对象是数组
-    if (!liList.getElementsByTagName('ul')[0]) {
-        ulList = document.createElement('ul');
-        ulList.setAttribute('data-cate-id', obj[0]);
-        ulList.className = 'data-cate';
-        ulList.style.padding = '0 0 0 20px';
-        ulList.innerHTML=  '<li data-list-id=' + obj[1] + '><span class="fa fa-file-o fa-fw"></span>'
-        + obj[1] + '(' + toCount('data.lists', obj[1]) + ')' + '<span class="fa fa-minus-circle list"></span></li>';
-        liList.appendChild(ulList);
-        return; // 不return会重复第一个任务
-    }
-    if (liList.getElementsByTagName('ul')[0]) {
-        liList.getElementsByTagName('ul')[0].innerHTML +=  '<li data-list-id=' + obj[1] + '><span class="fa fa-file-o fa-fw"></span>'
-    + obj[1] + '(' + toCount('data.lists', obj[1]) + ')'+ '<span class="fa fa-minus-circle list"></span></li>';
-    }
-
-
-}
 
 function toCount(arr, type) {
     // TODO
@@ -405,16 +383,19 @@ function toCount(arr, type) {
     }
 }
 
+// 调加中部任务列表
 function addMedium(obj) {
     $('#tasksList').innerHTML = '<li><ul class = data-task isDone ='+ obj.isDone + '><li class="task-time">' +obj.time+ '</li><li class = task-title>'  +obj.title+'</li></ul></li>'
 }
 
+// 添加右侧详情
 function addRightContent(obj) {
     $('#hidTitle').innerHTML = obj.title;
     $('#hidDate').innerHTML = obj.time;
     $('#taskContent').innerHTML = obj.content;
 }
 
+// 添加分类
 // 左侧添加分类按钮
 var addCate = $('#addCate'),
     cancel = $('#cancel'),
@@ -449,6 +430,8 @@ $.click(close, function () {
     // console.log('cancel add cate');
     coverStyle.display = 'none';
 });
+
+// 确认按钮
 $.click(sure, addACate);
 function addACate() {
     node = document.createElement('li');
@@ -525,6 +508,9 @@ function editTask() {
 
 
 // 保存编辑按钮
+// 分为两部分
+// 编辑任务后保存
+// 新建任务后保存
 $.click($('#save'), saveEdit);
 function saveEdit() {
 
@@ -574,13 +560,16 @@ function saveEdit() {
                 tasks.push(task);
             }
         })
-
+        data.tasks.sort(compare('time'));
         $('#tasksList').innerHTML = '';
         each(tasks, function (task) {
             $('#tasksList').innerHTML += '<li><ul class = data-task isDone ='+ task.isDone + '><li class="task-time">' +task.time+ '</li><li class = task-title>'  +task.title+'</li></ul></li>'
         })
-
-
+        // 初始化左侧分类及子分类
+        countAllTask();
+        updateData();
+        each(data.cates, addCate);
+        each(data.lists, addList);
     }
 
 }
@@ -723,4 +712,17 @@ $.click($('#back'), function () {
     }
 });
 
+// 设配移动端
+// 左上方返回按钮
+function initBack() {
+    $('#back').style.visibility = 'hidden';
+}
 
+// 设配移动端
+// 运行时左上方返回按钮的状态
+function ingBack() {
+    if (window.innerWidth < parseInt('770px')) {
+        console.log(window.innerWidth);
+        $('#back').style.visibility = 'visible';
+    }
+}

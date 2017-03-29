@@ -4,7 +4,7 @@
     var Btn = document.getElementById('btn');
     $.click($("#btn"), function(){
         var arr = inp.value.split(/\s+|\n|\,|\，|\;|\、/);
-        var unArr = uniuqArr(arr);
+        var unArr = uniqArray(arr);
         /*var i = 0;
         var len = unArr.length;
         if (len > 10 || unArr == "") {
