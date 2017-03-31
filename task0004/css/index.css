@@ -69,10 +69,7 @@ h2 {
 }
 
 
-h2:hover,h3:hover, h4:hover, h6:hover {
-    background-color: #4D63BA;
-    cursor: pointer;
-}
+
 
 li {
     cursor: pointer;
@@ -416,7 +413,7 @@ button {
         font-weight: normal;
     }
     li {
-        cursor: default;
+        /*cursor: default;*/
         list-style-type: none;
     }
     .container {
@@ -544,6 +541,13 @@ button {
 }
 
 @media screen and (min-width: 770px) {
+    h2:hover,h3:hover, h4:hover, h6:hover {
+        background-color: #4D63BA;
+        cursor: pointer;
+    }
+
+
+
     .container {
         min-width: 858px;
         min-height: 500px;
