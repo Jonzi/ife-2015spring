@@ -28,7 +28,7 @@
     initMinus();
 
     // 任务排序
-    data.tasks.sort('time');
+    data.tasks.sort(compare('time'));
 
 })();
 

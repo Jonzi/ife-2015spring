@@ -14,7 +14,7 @@ header {
     top: 0;
     left: 0;
     width: 100%;
-    min-width: 858px;
+    /*min-width: 858px;*/
     height: 45px;
     line-height: 45px;
     background: #3367d6;
@@ -42,9 +42,8 @@ span {
     top: 45px;
     bottom: 0;
     width: 100%;
-    min-width: 858px;
-    min-height: 500px;
-    padding: 15px;
+
+    /*padding: 15px;*/
     -webkit-box-sizing: border-box;
        -moz-box-sizing: border-box;
             box-sizing: border-box;
@@ -65,11 +64,9 @@ span {
 
 h2 {
     width: 235px;
-    margin-bottom: 5px;
     margin-left: 15px;
     opacity: .8;
 }
-
 
 
 h2:hover,h3:hover, h4:hover, h6:hover {
@@ -120,23 +117,17 @@ li {
 #addTask {
     position: absolute;
     bottom: 40px;
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
-    line-height: 40px;
+    line-height: 50px;
     text-align: center;
     background: #3367d6;
     color: #FFF;
     box-shadow: 5px 5px 7px rgba(21, 18, 41, 0.18);
 }
 
-#addTask {
-    left: 229px;
-}
 
-#addCate {
-    left: 192px;
-}
 
 .midTask {
     position: relative;
@@ -179,7 +170,7 @@ li {
     right: 0;
     min-width: 273px;
     height: 100%;
-    margin-left: 570px;
+
     background-color: rgba(250, 250, 250, 1);
     z-index: 3;
 }
@@ -314,7 +305,7 @@ li {
     width: 100%;
     margin: 0 auto;
     height: 67px;
-    background-color: rgba(243, 243, 243, .5);
+    /*background-color: rgba(243, 243, 243, .5);*/
 }
 
 button {
@@ -390,4 +381,186 @@ button {
     background-color: #f3f3f3;
 }
 
+@media screen and (max-width: 769px) {
+    html {
+        font-size: 16px;
+    }
+
+    body {
+        width: 100%;
+        min-width: 0;
+        height: 100%;
+        font-family: "Helvetica Neue", Arial, "Hiragino Sans GB", "WenQuanYi Micro Hei", "Microsoft YaHei", sans-serif;
+    }
+
+    h1 {
+        text-align: center;
+        font-size: 1.5rem;
+        font-weight: normal;
+    }
+
+    h2 {
+        width: 100%;
+        margin-left: 0;
+        padding-left: 15px;
+        margin-right: 0px;
+        box-sizing: border-box;
+        opacity: 1;
+        font-weight: normal;
+    }
+    h3 {
+        font-weight: normal;
+        margin-right: 15px;
+    }
+    h4 {
+        font-weight: normal;
+    }
+    li {
+        cursor: default;
+        list-style-type: none;
+    }
+    .container {
+        position: absolute;
+        top: 45px;
+        bottom: 0;
+        width: 100%;
+        overflow: hidden;
+        box-sizing: border-box;
+        background-color: #e6ebf5;
+    }
+    .container,
+    .leftCate,
+    .midTask,
+    .rightContent {
+        -webkit-transition: .3s ease-in-out;
+        transition: .3s ease-in-out;
+    }
+    .leftCate {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        color: #222;
+        background-color: #FFFFFF;
+        z-index: 3;
+    }
+    #cateList ul {
+        font-weight: normal;
+        line-height: 2;
+        margin-right: 15px;
+    }
+    #cateList li {
+        margin-left: 15px;
+        line-height: 2;
+        opacity: 1;
+    }
+    .data-cate > li:hover {
+    }
+    span.fa.fa-minus-circle {
+        float: right;
+        line-height: 2;
+        font-size: 1rem;
+        opacity: 1;
+    }
+
+    #addCate,
+    #addTask {
+        right: 15px;
+    }
+
+    .selectedCate {
+        background-color: rgb(244, 244, 244);
+    }
+    .selectedStatus {
+        background-color: rgb(244, 244, 244);
+    }
+    .active{
+        transform: translate3d(-100%, 0, 0);
+    }
+    .visit {
+        transform: translate3d(100%, 0, 0);
+    }
+
+    .midTask {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        min-width: 270px;
+        height: 100%;
+        background-color: #FFFFFF;
+        z-index: 2;
+    }
+
+    .status {
+        line-height: 45px;
+    }
+    .status ul {
+        border-bottom: 1px solid rgba(197, 197, 197, 0.38);
+        display: flex;
+        display: -webkit-flex;
+    }
+
+    .status li {
+        text-align: center;
+        flex: auto;
+    }
+    .rightContent {
+        position: relative;
+        left: 0;
+        right: 0;
+        z-index: 1;
+        height: 100%;
+        width: 100%;
+        background-color: rgba(250, 250, 250, 1);
+    }
+
+    .rightHide {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        margin-left: 0;
+        display: none;
+        height: 100%;
+        background-color: #FFFFFF;
+    }
+
+    #cover {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        display: none;
+        width: 88%;
+        height: 180px;
+        margin-top: -90px;
+        margin-left: -44%;
+        -webkit-box-shadow: 0 2px 6px rgba(0,0,0,.16), 0 6px 26px rgba(0,0,0,.3);
+        box-shadow: 0 2px 6px rgba(0,0,0,.16), 0 6px 26px rgba(0,0,0,.3);
+        -webkit-transition: all .1s ease-in-out;
+        transition: all .1s ease-in-out;
+        background-color: #FDFDFD;
+        z-index: 4;
+    }
+
+}
+
+@media screen and (min-width: 770px) {
+    .container {
+        min-width: 858px;
+        min-height: 500px;
+        padding: 15px;
+    }
+
+    .rightContent {
+        margin-left: 570px;
+    }
+
+    #addTask {
+        left: 229px;
+    }
+
+    #addCate {
+        left: 192px;
+    }
+
+}
 
