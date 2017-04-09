@@ -1,0 +1,46 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: gray;
+}
+.draggable_l,
+.draggable_r {
+    border:1px solid black;
+    width: 150px;
+    height: 40px;
+    background: red;
+    position: absolute;
+    z-index: 1;
+    cursor: move;
+
+    /*拖动时会选中文本*/
+    /*禁止选中 不兼容IE*/
+    -moz-user-select:none;
+    -webkit-user-select:none;
+    user-select:none;
+}
+
+.move {
+    z-index: 3;
+}
+
+.container {
+    width: 604px;
+    margin: 200px auto;
+
+}
+
+.post {
+    background: white;
+    width: 150px;
+    height: 320px;
+    float: left;
+    position: relative;
+}
+
+.left {
+    margin-right: 300px;
+}

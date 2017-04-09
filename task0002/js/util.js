@@ -372,8 +372,8 @@ function trim1(str) {
 
 // 实现一个遍历数组的方法，针对数组中每一个元素执行fn函数，并将数组索引和元素作为参数传递
 function each(arr, fn) {
-    for (var i = 0, l = arr.length; i < 1; i++) {  // 遍历数组
-        fn(arr[i],i);     // 针对数组中每一个元素执行fn函数
+    for( var i=0; i < arr.length; i++ ) {
+        fn(arr[i], i);
     }
 }
 // 其中fn函数可以接受两个函数：item和index
@@ -514,6 +514,16 @@ function isMobilePhone(phone) {
 function addClass(element, newClassName) {
     var oldClassName = element.className;
     element.className = oldClassName === "" ? newClassName : oldClassName + " " + newClassName;
+}
+
+function hasClass(tagStr,classStr){
+    var arr=tagStr.className.split(/\s+/ ); //这个正则表达式是因为class可以有多个,判断是否包含
+    for (var i=0;i<arr.length;i++){
+        if (arr[i]==classStr){
+            return true ;
+        }
+    }
+    return false ;
 }
 
 // 移除element中的样式oldClassName

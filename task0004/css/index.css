@@ -172,6 +172,20 @@ li {
     z-index: 3;
 }
 
+.task_title {
+    border-bottom: 1px solid #EEE;
+    padding-left: 10px;
+    line-height: 40px;
+    background-color: #FDFDFD;
+}
+
+.task_date {
+    padding-left: 10px;
+    border-bottom: 1px solid #EEE;
+    line-height: 40px;
+    background-color: #FDFDFD;
+}
+
 .task_content {
     position: absolute;
     top: 82px;
@@ -192,19 +206,7 @@ li {
     margin-right: 5px;
 }
 
-.task_title {
-    border-bottom: 1px solid #EEEEEE;
-    padding-left: 10px;
-    line-height: 40px;
-    background-color: #FDFDFD;
-}
 
-.task_date {
-    padding-left: 10px;
-    border-bottom: 1px solid #EEE;
-    line-height: 40px;
-    background-color: #FDFDFD;
-}
 
 .rightHide {
     position: absolute;
@@ -319,7 +321,7 @@ button {
     right: 10px;
     margin-top: -12.5px;
     color: #fff;
-    background-color: #617fde
+    background-color: #617fde;
 }
 
 #sure:hover{
@@ -461,7 +463,7 @@ button {
     }
 
     .selectedCate {
-        background-color: rgb(244, 244, 244);
+        background-color: #f4f4f4;
     }
     .selectedStatus {
         background-color: rgb(244, 244, 244);
@@ -484,6 +486,7 @@ button {
     }
 
     .status {
+        width: 100%;
         line-height: 45px;
     }
     .status ul {

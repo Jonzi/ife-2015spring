@@ -519,7 +519,9 @@ function saveEdit() {
     // XXX：刷新页面，本地数据没有刷新
     $('#hidTitle').innerHTML = $('#inputTitle').value; // 更新标题
     $('#hidDate').innerHTML = $('#inputDate').value; // 更新日期
-    $('#taskContent').innerHTML = $('#inputContent').value // 更新内容
+    var reg=new RegExp("\r\n","g");
+    $('#taskContent').innerHTML = $('#inputContent').value
+    // $('#taskContent').innerText = $('#inputContent').value.replace(reg, "<br>") // 更新内容
 
     // 如何更改task的content
     // 而不是只更改taskcontent的innerHTML
