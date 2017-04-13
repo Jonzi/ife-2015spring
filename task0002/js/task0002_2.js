@@ -2,10 +2,10 @@ window.onload = function() {
     var iNow = null;
     var iNew = null;
     var timer = null;
-    var show = $(".show");
-    $.click($("button"),function() {
+    var show = $(".show")[0];
+    $.click($("button")[0],function() {
         clearInterval(timer);
-        var inputTime = $("input").value;
+        var inputTime = $("input")[0].value;
         iNew = new Date(inputTime.replace("-","/"));
         // console.log(iNew);
         // iNow = new Date();  //这里定义的iNow与下面第二个不一样

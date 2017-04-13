@@ -833,11 +833,7 @@ function delegateEvent(element,tag,eventName,listener){
 $.delegate = delegateEvent;
 //$.delegate($("#list"), "li", "click", clickHandle);
 
-function delegateClickEvent(ele,listener){
-    for(var i = 0,len=ele.length;i<len;i++){
-        addClickEvent(ele[i],listener);
-    }
-}
+
 
 //判断是否为IE浏览器，返回-1或者版本号
 function isIE() {

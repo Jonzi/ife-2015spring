@@ -1,6 +1,6 @@
-var myText = $('.myText');
-var list = $('.list');
-var choice = $('.list').getElementsByTagName('li');
+var myText = $('.myText')[0];
+var list = $('.list')[0];
+var choice = list.getElementsByTagName('li');
 var suggestData = ['texotne', 'textwoo', 'textwoothree', 'textonefour'];
 
 //监听input的值
